@@ -11,6 +11,9 @@ For an interim description of the dataset, please see the
 [Description and Citation](ICPSR_08451/08451-descriptioncitation.html),
 included in the repository, or [access the dataset via 
 ICPSR](https://www.icpsr.umich.edu/icpsrweb/ICPSR/studies/8451)
-([stable link](https://doi.org/10.3886/ICPSR08451.v5)).
+([stable link](https://doi.org/10.3886/ICPSR08451.v5)). The metadata
+associated with the dataset are also included both on a [metadata 
+record](MetadataRecord_ICPSR_08451.pdf) and under the "Dataset Metadata"
+header in the [project proposal](../ProjectProposal.pdf).
 
 To view the local files, please contact us directly.
