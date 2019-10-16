@@ -98,60 +98,102 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
- html {
-   background-image: url("../img/patterns/interlaced.png")
- }
+body {
+  background-image: url("../img/patterns/interlaced.png");
+  background-attachment: fixed;
+}
 
 header {
-  background-color: rgba(50, 50, 50, 20);
+  background-image: url("../img/patterns/interlaced.png");
+  background-attachment: fixed;
+}
+
+#site-header {
   color: white;
-  padding: 0 2.5%;
+}
+
+#site-header > div {
+  padding: 0 2.5em;
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 #site-icon {
   height: 4em;
 }
 
-#site-header {
+#site-title {
   display: inline-block;
   padding: 0 0.5em;
 }
 
-#site-subheader {
+#site-subtitle {
   display: inline-block;
   font-style: italic;
 }
 
+#main-navbar {
+  position: sticky;
+  top: 0;
+  color: white;
+}
+
 .navbar-list {
-  display: sticky;
+  padding: 0 0.75em;
   list-style-type: none;
   margin: 0;
-  padding: 0;
   overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .navbar-list li {
   float: left;
+  font-size: 1.25em;
 }
 
 .navbar-list li a {
   color: white;
   text-align: center;
-  font-size: 1.25em;
   padding: 0.75em 1.25em;
   text-decoration: none;
 }
 
 .navbar-list li a:hover,
 .navbar-list li a:focus {
-  background-color: rgb(200, 50, 50);
+  background-color: rgba(218, 165, 32, 0.8);
+  transition: 0.1s;
 }
 
-#active-tab {
-  color: black;
-  background-color: #f4f5f6;
-  background-image: url("../img/patterns/interlaced.png");
+.navbar-list #anchor-tab {
   font-weight: bold;
+  padding: 0 2.5em 0 0;
+}
+
+.navbar-list #anchor-tab a {
+  padding: 0.75em;
+  background-color: transparent;
+  color: white;
+  text-decoration: none;
+}
+
+.navbar-list #active-tab {
+  background-image: url("../img/patterns/interlaced.png");
+  background-attachment: fixed;
+}
+
+.navbar-list #active-tab a {
+  color: black;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+#main-navbar #navbar-head {
+  height: 0.5em;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+#main-navbar #navbar-foot {
+  height: 1em;
+  background-color: rgba(255, 255, 255, 0.7);
 }
 
 
@@ -201,9 +243,12 @@ header {
   height: auto;
   margin: 0;
   overflow: visible;
-  position: static;
+  position: fixed;
+  z-index: 1;
   white-space: inherit;
   width: auto;
+  padding: 0.1em 0.3em;
+  background-color: #f4f5f6;
 }
 
 /*
