@@ -123,11 +123,13 @@ header {
 
 #site-header #site-title {
   display: block;
+  margin-bottom: 0;
 }
 
 #site-header #site-subtitle {
   display: block;
   font-style: italic;
+  margin-bottom: 0;
 }
 
 #main-navbar {
@@ -185,7 +187,7 @@ header {
   background-color: rgba(255, 255, 255, 0.7);
 }
 
-#main-navbar #main-navbar #navbar-head {
+#main-navbar #navbar-head {
   height: 0.5em;
   background-color: rgba(0, 0, 0, 0.8);
 }
