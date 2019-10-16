@@ -99,37 +99,37 @@ textarea {
    ========================================================================== */
 
 body {
-  background-image: url("../img/patterns/interlaced.png");
-  background-attachment: fixed;
+  background-color: white;
 }
 
 header {
-  background-image: url("../img/patterns/interlaced.png");
+  background-image: url("../img/patterns/dark-honeycomb.png");
   background-attachment: fixed;
 }
 
 #site-header {
   color: white;
-}
-
-#site-header > div {
-  padding: 0 2.5em;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgb(50, 50, 50);
+  padding: 1em 2.5em;
 }
 
 #site-header #site-icon {
-  height: 4em;
+  height: 5em;
+  display: inline-block;
+  margin-right: 2em;
 }
 
 #site-header #site-title {
-  display: block;
-  margin-bottom: 0;
+  display: inline-block;
+  position: relative;
+  padding-top: 0.5em;
+  margin: 0;
 }
 
-#site-header #site-subtitle {
+#site-header #site-tagline {
   display: block;
   font-style: italic;
-  margin-bottom: 0;
+  margin: 0;
 }
 
 #main-navbar {
@@ -139,11 +139,10 @@ header {
 }
 
 #main-navbar .navbar-list {
-  padding: 0 0.75em;
+  padding: 0;
   list-style-type: none;
   margin: 0;
   overflow: hidden;
-  background-color: rgba(0, 0, 0, 0.8);
 }
 
 #main-navbar .navbar-list li {
@@ -166,11 +165,11 @@ header {
 
 #main-navbar .navbar-list #anchor-tab {
   font-weight: bold;
-  padding: 0 2.5em 0 0;
+  padding: 0 2.5em;
 }
 
 #main-navbar .navbar-list #anchor-tab a {
-  padding: 0.75em;
+  padding: 0;
   background-color: transparent;
   color: white;
   text-decoration: none;
@@ -184,17 +183,24 @@ header {
 #main-navbar .navbar-list #active-tab a {
   color: black;
   font-weight: bold;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: white;
 }
 
 #main-navbar #navbar-head {
   height: 0.5em;
-  background-color: rgba(0, 0, 0, 0.8);
 }
 
 #main-navbar #navbar-foot {
   height: 1em;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: white;
+  border-bottom: 1px solid lightgrey;
+}
+
+main {
+  width: 65%;
+  padding: 0.25em 2.5%;
+  border-left: 1px solid lightgrey;
+  margin: 0 15%;
 }
 
 
