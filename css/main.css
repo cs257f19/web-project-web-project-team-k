@@ -98,6 +98,63 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+ html {
+   background-image: url("../img/patterns/interlaced.png")
+ }
+
+header {
+  background-color: rgba(50, 50, 50, 20);
+  color: white;
+  padding: 0 2.5%;
+}
+
+#site-icon {
+  height: 4em;
+}
+
+#site-header {
+  display: inline-block;
+  padding: 0 0.5em;
+}
+
+#site-subheader {
+  display: inline-block;
+  font-style: italic;
+}
+
+.navbar-list {
+  display: sticky;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.navbar-list li {
+  float: left;
+}
+
+.navbar-list li a {
+  color: white;
+  text-align: center;
+  font-size: 1.25em;
+  padding: 0.75em 1.25em;
+  text-decoration: none;
+}
+
+.navbar-list li a:hover,
+.navbar-list li a:focus {
+  background-color: rgb(200, 50, 50);
+}
+
+#active-tab {
+  color: black;
+  background-color: #f4f5f6;
+  background-image: url("../img/patterns/interlaced.png");
+  font-weight: bold;
+}
+
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */
@@ -263,4 +320,3 @@ textarea {
     page-break-after: avoid;
   }
 }
-
