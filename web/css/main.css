@@ -117,17 +117,16 @@ header {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
-#site-icon {
+#site-header #site-icon {
   height: 4em;
 }
 
-#site-title {
-  display: inline-block;
-  padding: 0 0.5em;
+#site-header #site-title {
+  display: block;
 }
 
-#site-subtitle {
-  display: inline-block;
+#site-header #site-subtitle {
+  display: block;
   font-style: italic;
 }
 
@@ -137,7 +136,7 @@ header {
   color: white;
 }
 
-.navbar-list {
+#main-navbar .navbar-list {
   padding: 0 0.75em;
   list-style-type: none;
   margin: 0;
@@ -145,48 +144,48 @@ header {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
-.navbar-list li {
+#main-navbar .navbar-list li {
   float: left;
   font-size: 1.25em;
 }
 
-.navbar-list li a {
+#main-navbar .navbar-list li a {
   color: white;
   text-align: center;
   padding: 0.75em 1.25em;
   text-decoration: none;
 }
 
-.navbar-list li a:hover,
-.navbar-list li a:focus {
+#main-navbar .navbar-list li a:hover,
+#main-navbar .navbar-list li a:focus {
   background-color: rgba(218, 165, 32, 0.8);
   transition: 0.1s;
 }
 
-.navbar-list #anchor-tab {
+#main-navbar .navbar-list #anchor-tab {
   font-weight: bold;
   padding: 0 2.5em 0 0;
 }
 
-.navbar-list #anchor-tab a {
+#main-navbar .navbar-list #anchor-tab a {
   padding: 0.75em;
   background-color: transparent;
   color: white;
   text-decoration: none;
 }
 
-.navbar-list #active-tab {
+#main-navbar .navbar-list #active-tab {
   background-image: url("../img/patterns/interlaced.png");
   background-attachment: fixed;
 }
 
-.navbar-list #active-tab a {
+#main-navbar .navbar-list #active-tab a {
   color: black;
   font-weight: bold;
   background-color: rgba(255, 255, 255, 0.7);
 }
 
-#main-navbar #navbar-head {
+#main-navbar #main-navbar #navbar-head {
   height: 0.5em;
   background-color: rgba(0, 0, 0, 0.8);
 }
