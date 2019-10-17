@@ -102,11 +102,15 @@ body {
   background-color: #f4f5f6;
 }
 
+/* both title/header and navbar */
+
 header {
   background-color: #2a2a2a;
   background-image: url("../img/patterns/dark-honeycomb.png");
   background-attachment: fixed;
 }
+
+/* == site title/header == */
 
 #site-header {
   color: white;
@@ -134,6 +138,8 @@ header {
   font-style: italic;
   margin: 0;
 }
+
+/* == main navbar == */
 
 #main-navbar {
   position: sticky;
@@ -198,6 +204,8 @@ header {
   border-bottom: 1px solid lightgrey;
 }
 
+/* == main content == */
+
 main {
   font-family: Roboto;
   background-color: white;
@@ -218,6 +226,8 @@ h2 {
   font-size: 1.5em;
 }
 
+/* == disclaimer == */
+
 .disclaimer {
   border-left: 0.5em solid #DC143C;
   background-color: rgba(220,20,60, 0.2);
@@ -228,6 +238,27 @@ h2 {
 
 .disclaimer:focus, .disclaimer:hover {
   background-color: rgba(220,20,60, 0.25);
+}
+
+/* == search table == */
+
+#search-results {
+  width: 100%;
+  text-align: center;
+}
+
+#search-results th {
+  background-color: rgb(200, 200, 200);
+  border-bottom: 2px solid black;
+}
+
+#search-results tr {
+  background-color: rgb(225, 225, 225);
+}
+
+#search-results tr:focus,
+#search-results tr:hover {
+  background-color: rgb(215, 215, 215);
 }
 
 
