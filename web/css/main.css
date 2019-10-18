@@ -229,6 +229,11 @@ h2 {
 /* == disclaimer == */
 
 .disclaimer {
+  text-decoration: none;
+  color: black;
+}
+
+.disclaimer blockquote {
   border-left: 0.5em solid #DC143C;
   background-color: rgba(220,20,60, 0.2);
   margin: 1em 0;
@@ -236,7 +241,8 @@ h2 {
   font-size: 1.1em;
 }
 
-.disclaimer:focus, .disclaimer:hover {
+.disclaimer blockquote:focus,
+.disclaimer blockquote:hover {
   background-color: rgba(220,20,60, 0.25);
 }
 
