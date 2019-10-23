@@ -8,30 +8,8 @@ class DataSource:
 	or some other collection or object.
 	"""
 
-    def __init__(self, user, password, dbname):
-        """
-		"""
-		self.connection = __establish_connection__(user, password, dbname)
-
-	def __establish_connection__(self, user, password, dbname):
-		"""Establishes a connection to the database.
-
-		PARAMETERS:
-			user - username credential for db access
-			password - associated password for db access
-			database - the name of the db to access
-
-		RETURN:
-			a psycopg2 connection object
-		"""
-		try:
-			connection = psycopg2.connect(dbname=dbname, user=user, password=password)
-
-		except Exception as e:
-			print("Connection error: ", e)
-			exit(1)
-
-		return connection
+    def __init__(self, connection):
+		self.connection = connection
 
     def get_executions_by_race(self, race):
         """Returns a list of all of the executions on persons of the specified race.
@@ -158,23 +136,46 @@ class DataSource:
 		"""
 		return []
 
+
+def establish_connection(user, password, dbname):
+	"""Establishes a connection to the database.
+
+	PARAMETERS:
+		user - username credential for db access
+		password - associated password for db access
+		dbname - the name of the db to access
+
+	RETURN:
+		a psycopg2 connection object
+	"""
+	try:
+		connection = psycopg2.connect(dbname=dbname, user=user, password=password)
+
+	except Exception as e:
+		print("Connection error: ", e)
+		exit(1)
+
+	return connection
+
+
 def main():
 	"""FOR TESTING PURPOSES ONLY
 
 	Attempts to connect to the database using our credentials, then execute the implemented methods
 	and print the results.
 	"""
-	# Replace these credentials with your own
+	# Our credentials
 	user = 'yeec'
 	password = getpass.getpass()
+	port = 5128
 
-	# Create the data source
-	data_source = DataSource(user, password, dbname=user)
+	connection = establish_connection(user, password, dbname=user, port=port) # dbname=user assumes default database name
+	data_source = DataSource(connection)
 
 	# Execute a simple query: how many earthquakes above the specified magnitude are there in the data?
-	results_date = data_source.get_executions_by_date(self, "1800-01-01", "1900-01-01")
-	resultsState = data_source.get_executions_by_state(self, Maine)
-	resultsAge = data_source.get_executions_by_age(self, 45, 55)
+	results_date = data_source.get_executions_by_date("1800-01-01", "1900-01-01")
+	resultsState = data_source.get_executions_by_state(Maine)
+	resultsAge = data_source.get_executions_by_age(45, 55)
 
 	if resultDate is not None:
 		print("Query date results: ")
