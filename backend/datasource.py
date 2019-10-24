@@ -20,21 +20,21 @@ class DataSource:
         RETURN:
             a list of all of the executions where the person is of the specified race
         """
-        return []
+        pass
 
     def get_executions_by_age(self, startAge, endAge):
-        """Returns a list of all of the executions that occurred within the specified age range (inclusive).
+        """Returns a list of all of the executions that occurred within the specified age range (inclusive)
 
         PARAMETERS:
-            startAge - the lower end of the age range
-			endAge - the upper end of the age range
+            startAge - the lower end of the age range (inclusive)
+			endAge - the upper end of the age range (inclusive)
 
         RETURN:
             a list of all of the executions that occurred within the given age range
         """
         try:
-			cursor = connection.cursor()
-			query = "SELECT	* FROM executions WHERE age > " + str(startAge) + "AND age < " + str(endAge) + " ORDER BY age DESC"
+			cursor = self.connection.cursor()
+			query = "SELECT	* FROM executions WHERE age BETWEEN " + startAge + " AND " + endAge + " ORDER BY age DESC"
 			cursor.execute(query)
 			return cursor.fetchall()
 
@@ -43,18 +43,18 @@ class DataSource:
 			return None
 
     def get_executions_by_date(self, startDate, endDate):
-        """Returns a list of all of the executions that occurred within the range of specified dates.
+        """Returns a list of all of the executions that occurred within the specified date range (inclusive)
 
         PARAMETERS:
-            startDate - the starting date of the range
-            endDate - the ending date of the range
+            startDate - the starting date of the range (inclusive)
+            endDate - the ending date of the range (inclusive)
 
         RETURN:
-            a list of all of the executions that occurred within this date range.
+            a list of all of the executions that occurred within the given date range.
         """
         try:
-			cursor = connection.cursor()
-			query = "SELECT	* FROM executions WHERE date > " + str(startDate) + "AND date < " + str(endDate) + " ORDER BY date DESC"
+			cursor = self.connection.cursor()
+			query = "SELECT	* FROM executions WHERE date BETWEEN " + startDate + " AND " + endDate + " ORDER BY date DESC"
 			cursor.execute(query)
 			return cursor.fetchall()
 
@@ -72,8 +72,8 @@ class DataSource:
             a list of all of the executions that occurred in this state
         """
         try:
-			cursor = connection.cursor()
-			query = "SELECT	* FROM executions WHERE state = " + str(state) + " ORDER BY state DESC"
+			cursor = self.connection.cursor()
+			query = "SELECT	* FROM executions WHERE state = " + state + " ORDER BY state DESC"
 			cursor.execute(query)
 			return cursor.fetchall()
 
@@ -90,7 +90,7 @@ class DataSource:
         RETURN:
             a list of all of the executions that occurred in this county
         """
-        return []
+        pass
 
 	def get_executions_by_crime(self, crime):
 		"""Returns a list of all of the executions for the specified crime
@@ -101,7 +101,7 @@ class DataSource:
         RETURN:
             a list of all of the executions for the crime
         """
-        return []
+        pass
 
 	def get_executions_by_jurisdiction(self, jurisdiction):
 		"""Returns a list of all of the executions that occurred in the specified type of jurisdiction
@@ -112,7 +112,7 @@ class DataSource:
 	       RETURN:
 	           a list of all of the executions that occurred in this type of jurisdiction
        """
-       return []
+       pass
 
 	def get_executions_by_method_of_execution(self, method):
 		"""Returns a list of all of the executions that used the spefified method
@@ -123,10 +123,10 @@ class DataSource:
         RETURN:
             a list of all of the executions that used this method
         """
-        return []
+        pass
 
 	def get_executions_by_gender(self, gender):
-		"""Returns a list of all executions of people of the specified get_executions_by_gender
+		"""Returns a list of all executions of people of the specified gender
 
 		PARAMETERS:
 			gender - the gender of the executee
@@ -134,28 +134,7 @@ class DataSource:
 		RETURN:
 			a list of all the executions of people of the specified gender
 		"""
-		return []
-
-
-def establish_connection(user, password, dbname):
-	"""Establishes a connection to the database.
-
-	PARAMETERS:
-		user - username credential for db access
-		password - associated password for db access
-		dbname - the name of the db to access
-
-	RETURN:
-		a psycopg2 connection object
-	"""
-	try:
-		connection = psycopg2.connect(dbname=dbname, user=user, password=password)
-
-	except Exception as e:
-		print("Connection error: ", e)
-		exit(1)
-
-	return connection
+		pass
 
 
 def main():
@@ -164,7 +143,7 @@ def main():
 	Attempts to connect to the database using our credentials, then execute the implemented methods
 	and print the results.
 	"""
-	# Our credentials
+	# Team credentials
 	user = 'yeec'
 	password = getpass.getpass()
 	port = 5128
@@ -174,7 +153,7 @@ def main():
 
 	# Execute a simple query: how many earthquakes above the specified magnitude are there in the data?
 	results_date = data_source.get_executions_by_date("1800-01-01", "1900-01-01")
-	resultsState = data_source.get_executions_by_state(Maine)
+	resultsState = data_source.get_executions_by_state("Maine")
 	resultsAge = data_source.get_executions_by_age(45, 55)
 
 	if resultDate is not None:
@@ -194,5 +173,26 @@ def main():
 
 	# Disconnect from database
 	connection.close()
+
+
+def establish_connection(user, password, dbname):
+	"""Establishes a connection to the database
+
+	PARAMETERS:
+		user - username credential for db access
+		password - associated password for db access
+		dbname - the name of the db to access
+
+	RETURN:
+		a psycopg2 connection object
+	"""
+	try:
+		connection = psycopg2.connect(dbname=dbname, user=user, password=password)
+
+	except Exception as e:
+		print("Connection error: ", e)
+		exit(1)
+
+	return connection
 
 main()
