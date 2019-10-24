@@ -22,7 +22,7 @@ class DataSource:
         """
         pass
 
-    def get_executions_by_age(self, startAge, endAge):
+    def get_executions_within_age_range(self, startAge, endAge):
         """Returns a list of all of the executions that occurred within the specified age range (inclusive)
 
         PARAMETERS:
@@ -42,19 +42,19 @@ class DataSource:
 			print ("Something went wrong when executing the query: ", e)
 			return None
 
-    def get_executions_by_date(self, startDate, endDate):
-        """Returns a list of all of the executions that occurred within the specified date range (inclusive)
+    def get_executions_within_year_range(self, startYear, endYear):
+        """Returns a list of all of the executions that occurred within the specified year range (inclusive)
 
         PARAMETERS:
-            startDate - the starting date of the range (inclusive)
-            endDate - the ending date of the range (inclusive)
+            startYear - the starting year of the range (inclusive)
+            endYear - the ending year of the range (inclusive)
 
         RETURN:
-            a list of all of the executions that occurred within the given date range.
+            a list of all of the executions that occurred within the given year range.
         """
         try:
 			cursor = self.connection.cursor()
-			query = "SELECT	* FROM executions WHERE date BETWEEN " + startDate + " AND " + endDate + " ORDER BY date DESC"
+			query = "SELECT	* FROM executions WHERE year BETWEEN " + startDate + " AND " + endDate + " ORDER BY year DESC"
 			cursor.execute(query)
 			return cursor.fetchall()
 
@@ -144,31 +144,32 @@ def main():
 	and print the results.
 	"""
 	# Team credentials
-	user = 'yeec'
-	password = getpass.getpass()
-	port = 5128
+	user = "yeec"
+	password = "field429carpet"
+	port = 5128 # also 5228
 
 	connection = establish_connection(user, password, dbname=user, port=port) # dbname=user assumes default database name
 	data_source = DataSource(connection)
 
-	# Execute a simple query: how many earthquakes above the specified magnitude are there in the data?
-	results_date = data_source.get_executions_by_date("1800-01-01", "1900-01-01")
-	resultsState = data_source.get_executions_by_state("Maine")
-	resultsAge = data_source.get_executions_by_age(45, 55)
+	# Execute implemented queries, then print all successful retrievals
 
-	if resultDate is not None:
+	results_date = data_source.get_executions_within_year_range(1895, 1900)
+	results_state = data_source.get_executions_by_state("Maine")
+	results_age = data_source.get_executions_within_age_range(45, 55)
+
+	if results_year is not None:
 		print("Query date results: ")
-		for item in resultsDate:
+		for item in results_date:
 			print(item)
 
-	if resultsState is not None:
+	if results_state is not None:
 		print("Query state results: ")
-		for item in resultsState:
+		for item in results_state:
 			print(item)
 
-	if resultsAge is not None:
+	if results_age is not None:
 		print("Query age results: ")
-		for item in results:
+		for item in results_age:
 			print(item)
 
 	# Disconnect from database
