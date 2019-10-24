@@ -16,7 +16,7 @@ class DataSource:
             connection - a psycopg2 connection on which to execute queries (see psycopg2 documentation)
 
         RETURN:
-            a new DataSource that will utilize the given connection
+            a new DataSource that will utilize this connection
         """
         self.connection = connection
 
@@ -39,7 +39,7 @@ class DataSource:
             endAge - the upper end of the age range (inclusive)
 
         RETURN:
-            a list of all of the executions that occurred within the given age range
+            a list of all of the executions that occurred within this age range
         """
         try:
             cursor = self.connection.cursor()
@@ -59,7 +59,7 @@ class DataSource:
             endYear - the ending year of the range (inclusive)
 
         RETURN:
-            a list of all of the executions that occurred within the given year range.
+            a list of all of the executions that occurred within this year range.
         """
         try:
             cursor = self.connection.cursor()
@@ -90,25 +90,25 @@ class DataSource:
             print ("Something went wrong when executing the query: ", e)
             return None
 
-    def get_executions_by_county(self, state):
-        """Returns a list of all of the executions that occurred in the specified county
+    def get_executions_by_county_of_conviction(self, county_number):
+        """Returns a list of all of the executions where conviction occurred in the specified county
 
         PARAMETERS:
-            county - the county of the executions
+            county_number - the FIPS code of the county of the executions
 
         RETURN:
-            a list of all of the executions that occurred in this county
+            a list of all of the executions where conviction occurred in this county
         """
         pass
 
-    def get_executions_by_crime(self, crime):
+    def get_executions_by_crime_committed(self, crime):
         """Returns a list of all of the executions for the specified crime
 
         PARAMETERS:
             crime - the crime committed that resulted in execution
 
         RETURN:
-            a list of all of the executions for the crime
+            a list of all of the executions for this crime
         """
         pass
 
@@ -124,7 +124,7 @@ class DataSource:
         pass
 
     def get_executions_by_method_of_execution(self, method):
-        """Returns a list of all of the executions that used the spefified method
+        """Returns a list of all of the executions that used the specified method
 
         PARAMETERS:
             method - the method of execution
@@ -134,14 +134,14 @@ class DataSource:
         """
         pass
 
-    def get_executions_by_gender(self, gender):
+    def get_executions_by_sex(self, sex):
         """Returns a list of all executions of people of the specified gender
 
         PARAMETERS:
-            gender - the gender of the executee
+            sex - the sex of the executee, i.e. 'male' or 'female'
 
         RETURN:
-            a list of all the executions of people of the specified gender
+            a list of all the executions of people of this gender
         """
         pass
 
