@@ -43,7 +43,7 @@ class DataSource:
         """
         try:
             cursor = self.connection.cursor()
-            query = "SELECT	* FROM executions WHERE age BETWEEN " + startAge + " AND " + endAge + " ORDER BY age DESC"
+            query = "SELECT	* FROM executions WHERE age BETWEEN " + str(startAge) + " AND " + str(endAge) + " ORDER BY age DESC"
             cursor.execute(query)
             return cursor.fetchall()
 
@@ -63,7 +63,7 @@ class DataSource:
         """
         try:
             cursor = self.connection.cursor()
-            query = "SELECT	* FROM executions WHERE year BETWEEN " + startDate + " AND " + endDate + " ORDER BY year DESC"
+            query = "SELECT	* FROM executions WHERE year BETWEEN " + str(startYear) + " AND " + str(endYear) + " ORDER BY year DESC"
             cursor.execute(query)
             return cursor.fetchall()
 
@@ -82,7 +82,7 @@ class DataSource:
         """
         try:
             cursor = self.connection.cursor()
-            query = "SELECT	* FROM executions WHERE state = " + state + " ORDER BY state DESC"
+            query = "SELECT	* FROM executions WHERE state = '" + state + "' ORDER BY state DESC"
             cursor.execute(query)
             return cursor.fetchall()
 
@@ -155,37 +155,36 @@ def main():
     # Team credentials
     user = "yeec"
     password = "field429carpet"
-    port = 5128 # also 5228
 
-    connection = establish_connection(user, password, dbname=user, port=port) # dbname=user assumes default database name
+    connection = establish_connection(user, password, dbname=user) # dbname=user assumes default database name
     data_source = DataSource(connection)
 
-    # Execute implemented queries, then print all successful retrievals
+    # Execute implemented queries, then print successful retrievals (up to 10 items per query)
 
-    results_date = data_source.get_executions_within_year_range(1895, 1900)
+    results_year = data_source.get_executions_within_year_range(1899, 1900)
     results_state = data_source.get_executions_by_state("Maine")
-    results_age = data_source.get_executions_within_age_range(45, 55)
+    results_age = data_source.get_executions_within_age_range(50, 55)
 
     if results_year is not None:
-        print("Query date results: ")
-        for item in results_date:
+        print("Query year results: ")
+        for item in results_year[:10]:
             print(item)
 
     if results_state is not None:
         print("Query state results: ")
-        for item in results_state:
+        for item in results_state[:10]:
             print(item)
 
     if results_age is not None:
         print("Query age results: ")
-        for item in results_age:
+        for item in results_age[:10]:
             print(item)
 
     # Disconnect from database
     connection.close()
 
 
-def establish_connection(user, password, dbname, port="8888"):
+def establish_connection(user, password, dbname):
     """Establishes a connection to the database
 
     PARAMETERS:
@@ -197,7 +196,7 @@ def establish_connection(user, password, dbname, port="8888"):
         a psycopg2 connection object
     """
     try:
-        connection = psycopg2.connect(dbname=dbname, user=user, password=password, port=port)
+        connection = psycopg2.connect(dbname=dbname, user=user, password=password)
 
     except Exception as e:
         print("Connection error: ", e)
