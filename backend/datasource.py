@@ -31,19 +31,19 @@ class DataSource:
         """
         pass
 
-    def get_executions_within_age_range(self, startAge, endAge):
+    def get_executions_within_age_range(self, start_age, end_age):
         """Returns a list of all of the executions that occurred within the specified age range (inclusive)
 
         PARAMETERS:
-            startAge - the lower end of the age range (inclusive)
-            endAge - the upper end of the age range (inclusive)
+            start_age - the lower end of the age range (inclusive)
+            end_age - the upper end of the age range (inclusive)
 
         RETURN:
             a list of all of the executions that occurred within this age range
         """
         try:
             cursor = self.connection.cursor()
-            query = "SELECT	* FROM executions WHERE age BETWEEN " + str(startAge) + " AND " + str(endAge) + " ORDER BY age DESC"
+            query = "SELECT	* FROM executions WHERE age BETWEEN " + str(start_age) + " AND " + str(end_age) + " ORDER BY age DESC"
             cursor.execute(query)
             return cursor.fetchall()
 
@@ -51,19 +51,19 @@ class DataSource:
             print ("Something went wrong when executing the query: ", e)
             return None
 
-    def get_executions_within_year_range(self, startYear, endYear):
+    def get_executions_within_year_range(self, start_year, end_year):
         """Returns a list of all of the executions that occurred within the specified year range (inclusive)
 
         PARAMETERS:
-            startYear - the starting year of the range (inclusive)
-            endYear - the ending year of the range (inclusive)
+            start_year - the starting year of the range (inclusive)
+            end_year - the ending year of the range (inclusive)
 
         RETURN:
             a list of all of the executions that occurred within this year range.
         """
         try:
             cursor = self.connection.cursor()
-            query = "SELECT	* FROM executions WHERE year BETWEEN " + str(startYear) + " AND " + str(endYear) + " ORDER BY year DESC"
+            query = "SELECT	* FROM executions WHERE year BETWEEN " + str(start_year) + " AND " + str(end_year) + " ORDER BY year DESC"
             cursor.execute(query)
             return cursor.fetchall()
 
