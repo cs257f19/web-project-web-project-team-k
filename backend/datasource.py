@@ -1,6 +1,12 @@
 import psycopg2
 
 
+TEAM_CREDENTIALS = {
+    "user": "yeec",
+    "password": "field429carpet"
+}
+
+
 class DataSource:
     """DataSource executes all of the queries on the database
 
@@ -29,7 +35,34 @@ class DataSource:
         RETURN:
             a list of all of the executions where the person is of the specified race
         """
-        pass
+        race = race.title()
+        query = "SELECT	* FROM executions WHERE race = '" + race + "' ORDER BY race DESC"
+        return self.execute_query(query)
+
+    def execute_query(self, query):
+        """Attempts to execute a query on the database.
+
+        PARAMETERS:
+            query - the postgreSQL query to search the database with based off of user input
+
+        RETURN:
+            None if query fails or finds nothing; or a list of all the executions that fit the query
+
+        NOTES:
+            Prints an error report if query fails
+        """
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query)
+            result = cursor.fetchall()
+            if len(result) == 0:
+                return None
+            return result
+
+        except Exception as e:
+            print ("Something went wrong when executing the query: ", e)
+            return None
+
 
     def get_executions_within_age_range(self, start_age, end_age):
         """Returns a list of all of the executions that occurred within the specified age range (inclusive)
@@ -146,17 +179,35 @@ class DataSource:
         pass
 
 
+def establish_connection(credentials, dbname=None):
+    """Establishes a connection to the database
+
+    PARAMETERS:
+        credentials - dict-like with "user" and "password" properties for validating the connection
+        dbname - the name of the db to access if not default (i.e. same as user in credentials)
+
+    RETURN:
+        a psycopg2 connection object
+    """
+    dbname = credentials["user"] if dbname is None else dbname
+
+    try:
+        connection = psycopg2.connect(dbname=credentials["user"], user=credentials["user"], password=credentials["password"])
+
+    except Exception as e:
+        print("Connection error: ", e)
+        exit(1)
+
+    return connection
+
+
 def main():
     """FOR TESTING PURPOSES ONLY
 
     Attempts to connect to the database using our credentials, then execute the implemented methods
     and print the results.
     """
-    # Team credentials
-    user = "yeec"
-    password = "field429carpet"
-
-    connection = establish_connection(user, password, dbname=user) # dbname=user assumes default database name
+    connection = establish_connection(TEAM_CREDENTIALS)
     data_source = DataSource(connection)
 
     # Execute implemented queries, then print successful retrievals (up to 10 items per query)
@@ -167,42 +218,27 @@ def main():
 
     if results_year is not None:
         print("Query year results: ")
+        print(len(results_year))
+        print(type(results_year))
         for item in results_year[:10]:
             print(item)
 
     if results_state is not None:
         print("Query state results: ")
+        print(len(results_state))
+        print(type(results_age))
         for item in results_state[:10]:
             print(item)
 
     if results_age is not None:
         print("Query age results: ")
+        print(len(results_age))
+        print(type(results_age))
         for item in results_age[:10]:
             print(item)
 
     # Disconnect from database
     connection.close()
-
-
-def establish_connection(user, password, dbname):
-    """Establishes a connection to the database
-
-    PARAMETERS:
-        user - username credential for db access
-        password - associated password for db access
-        dbname - the name of the db to access
-
-    RETURN:
-        a psycopg2 connection object
-    """
-    try:
-        connection = psycopg2.connect(dbname=dbname, user=user, password=password)
-
-    except Exception as e:
-        print("Connection error: ", e)
-        exit(1)
-
-    return connection
 
 
 if __name__ == "__main__":
