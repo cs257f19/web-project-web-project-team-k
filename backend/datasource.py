@@ -205,4 +205,5 @@ def establish_connection(user, password, dbname):
     return connection
 
 
-main()
+if __name__ == "__main__":
+    main()
