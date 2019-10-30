@@ -5,8 +5,8 @@ from datasource import *
 class DataSourceTester(unittest.TestCase):
 
     def setUp(self):
-        connection = establish_connection(TEAM_CREDENTIALS)
-        self.data_source = DataSource(connection)
+        self.connection = establish_connection(TEAM_CREDENTIALS)
+        self.data_source = DataSource(self.connection)
 
     def test_race_expected(self):
         race_expected_results = self.data_source.get_executions_by_race("White")
@@ -30,6 +30,9 @@ class DataSourceTester(unittest.TestCase):
     def test_race_not_string(self):
         race_not_string_results = self.data_source.get_executions_by_race("22")
         self.assertIsNone(race_not_string_results)
+
+    def tearDown(self):
+        self.connection.close()
 
 
 if __name__ == '__main__':
