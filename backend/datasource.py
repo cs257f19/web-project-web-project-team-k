@@ -1,3 +1,10 @@
+"""Provides the DataSource class to retrieve information about executions in the United States
+
+Provides methods to retrieve executions information from a specified database
+
+:author: Judi Bush, Luna Yee, Matt Stecklow
+"""
+
 import psycopg2
 
 
@@ -8,7 +15,7 @@ TEAM_CREDENTIALS = {
 
 
 class DataSource:
-    """DataSource executes all of the queries on the database
+    """DataSource executes all of the queries on a database of executions in the United States
 
     It will format the data it sends back to the frontend, usually as an ordered list of the data points.
     """
@@ -36,7 +43,7 @@ class DataSource:
             a list of all of the executions where the person is of the specified race
         """
         race = race.title()
-        query = "SELECT	* FROM executions WHERE race = '" + race + "' ORDER BY race DESC"
+        query = "SELECT * FROM executions WHERE race = '" + race + "' ORDER BY race DESC"
         return self.execute_query(query)
 
     def execute_query(self, query):
@@ -76,7 +83,7 @@ class DataSource:
         """
         try:
             cursor = self.connection.cursor()
-            query = "SELECT	* FROM executions WHERE age BETWEEN " + str(start_age) + " AND " + str(end_age) + " ORDER BY age DESC"
+            query = "SELECT * FROM executions WHERE age BETWEEN " + str(start_age) + " AND " + str(end_age) + " ORDER BY age DESC"
             cursor.execute(query)
             return cursor.fetchall()
 
@@ -96,7 +103,7 @@ class DataSource:
         """
         try:
             cursor = self.connection.cursor()
-            query = "SELECT	* FROM executions WHERE year BETWEEN " + str(start_year) + " AND " + str(end_year) + " ORDER BY year DESC"
+            query = "SELECT * FROM executions WHERE year BETWEEN " + str(start_year) + " AND " + str(end_year) + " ORDER BY year DESC"
             cursor.execute(query)
             return cursor.fetchall()
 
@@ -115,7 +122,7 @@ class DataSource:
         """
         try:
             cursor = self.connection.cursor()
-            query = "SELECT	* FROM executions WHERE state = '" + state + "' ORDER BY state DESC"
+            query = "SELECT * FROM executions WHERE state = '" + state + "' ORDER BY state DESC"
             cursor.execute(query)
             return cursor.fetchall()
 
@@ -156,11 +163,11 @@ class DataSource:
         """
         pass
 
-    def get_executions_by_method_of_execution(self, method):
+    def get_executions_by_manner_of_execution(self, manner):
         """Returns a list of all of the executions that used the specified method
 
         PARAMETERS:
-            method - the method of execution
+            manner - the method of execution
 
         RETURN:
             a list of all of the executions that used this method
