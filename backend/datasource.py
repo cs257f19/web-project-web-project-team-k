@@ -13,7 +13,6 @@ TEAM_CREDENTIALS = {
     "password": "field429carpet"
 }
 
-
 class DataSource:
     """DataSource executes all of the queries on a database of executions in the United States
 
@@ -43,7 +42,110 @@ class DataSource:
             a list of all of the executions where the person is of the specified race
         """
         race = race.title()
-        query = "SELECT * FROM executions WHERE race = '" + race + "' ORDER BY race DESC"
+        query = "SELECT * FROM executions WHERE race = '" + race + "' ORDER BY year DESC"
+        return self.execute_query(query)
+
+    def get_executions_within_age_range(self, start_age, end_age):
+        """Returns a list of all of the executions that occurred within the specified age range (inclusive)
+
+        PARAMETERS:
+            start_age - the lower end of the age range (inclusive)
+            end_age - the upper end of the age range (inclusive)
+
+        RETURN:
+            a list of all of the executions that occurred within this age range
+        """
+        query = "SELECT * FROM executions WHERE age BETWEEN " + str(start_age) + " AND " + str(end_age) + " ORDER BY age DESC"
+        return self.execute_query(query)
+
+    def get_executions_within_year_range(self, start_year, end_year):
+        """Returns a list of all of the executions that occurred within the specified year range (inclusive)
+
+        PARAMETERS:
+            start_year - the starting year of the range (inclusive)
+            end_year - the ending year of the range (inclusive)
+
+        RETURN:
+            a list of all of the executions that occurred within this year range.
+        """
+        query = "SELECT * FROM executions WHERE year BETWEEN " + str(start_year) + " AND " + str(end_year) + " ORDER BY year DESC"
+        return self.execute_query(query)
+
+    def get_executions_by_state(self, state):
+        """Returns a list of all of the executions that occurred in the specified state
+
+        PARAMETERS:
+            state - the state of the executions
+
+        RETURN:
+            a list of all of the executions that occurred in this state
+        """
+        state = state.title()
+        query = "SELECT * FROM executions WHERE state = '" + state + "' ORDER BY year DESC"
+        return self.execute_query(query)
+
+    def get_executions_by_county_of_conviction(self, county_number):
+        """Returns a list of all of the executions where conviction occurred in the specified county
+
+        PARAMETERS:
+            county_number - the FIPS code of the county of the executions
+
+        RETURN:
+            a list of all of the executions where conviction occurred in this county
+        """
+        query = "SELECT * FROM executions WHERE county = '" + str(county) + "' ORDER BY year DESC"
+        return self.execute_query(query)
+
+    def get_executions_by_crime_committed(self, crime):
+        """Returns a list of all of the executions for the specified crime
+
+        PARAMETERS:
+            crime - the crime committed that resulted in execution
+
+        RETURN:
+            a list of all of the executions for this crime
+        """
+        crime = crime.title()
+        query = "SELECT * FROM executions WHERE crime = '" + crime + "' ORDER BY year DESC"
+        return self.execute_query(query)
+
+    def get_executions_by_jurisdiction(self, jurisdiction):
+        """Returns a list of all of the executions that occurred in the specified type of jurisdiction
+
+           PARAMETERS:
+               jurisdiction - the authority under which the execution occurred (state, federal, military, etc.)
+
+           RETURN:
+               a list of all of the executions that occurred in this type of jurisdiction
+        """
+        jurisdiction = jurisdiction.title()
+        query = "SELECT * FROM executions WHERE jurisdiction = '" + jurisdiction + "' ORDER BY year DESC"
+        return self.execute_query(query)
+
+    def get_executions_by_manner_of_execution(self, manner):
+        """Returns a list of all of the executions that used the specified method
+
+        PARAMETERS:
+            manner - the method of execution
+
+        RETURN:
+            a list of all of the executions that used this method
+        """
+        manner = manner.title()
+        query = "SELECT * FROM executions WHERE manner = '" + manner + "' ORDER BY year DESC"
+        return self.execute_query(query)
+
+    def get_executions_by_sex(self, sex):
+        """Returns a list of all executions of people of the specified gender
+
+        PARAMETERS:
+            sex - the sex of the executee, i.e. 'male' or 'female'
+
+        RETURN:
+            a list of all the executions of people of this gender
+        """
+        sex = sex.title()
+        query = "SELECT * FROM executions WHERE sex = '" + sex + "' ORDER BY year DESC"
         return self.execute_query(query)
 
     def execute_query(self, query):
@@ -64,126 +166,48 @@ class DataSource:
             result = cursor.fetchall()
             if len(result) == 0:
                 return None
-            return result
+            return Execution.convert_to_executions(result)
 
         except Exception as e:
             print ("Something went wrong when executing the query: ", e)
             return None
 
 
-    def get_executions_within_age_range(self, start_age, end_age):
-        """Returns a list of all of the executions that occurred within the specified age range (inclusive)
+class Execution:
+    """Stores metadata about one execution for retrieval
+
+    These metadata may be retrieved by referencing the instance variables.
+    """
+
+    @static
+    DB_ENTRY_FORMAT = ["race", "age", "place", "jurisdiction", "crime", "manner", "day", "month",
+                       "year", "state", "county", "sex"]
+
+    @static
+    def convert_to_executions(db_entry_list):
+        """Converts a list of database-formatted tuples to Execution objects
 
         PARAMETERS:
-            start_age - the lower end of the age range (inclusive)
-            end_age - the upper end of the age range (inclusive)
+            db_entry_list - list of tuples, as returned by the database
 
         RETURN:
-            a list of all of the executions that occurred within this age range
+            a list of Execution objects created from the above data
         """
-        try:
-            cursor = self.connection.cursor()
-            query = "SELECT * FROM executions WHERE age BETWEEN " + str(start_age) + " AND " + str(end_age) + " ORDER BY age DESC"
-            cursor.execute(query)
-            return cursor.fetchall()
+        return [Execution(entry) for entry in db_entry_list]
 
-        except Exception as e:
-            print ("Something went wrong when executing the query: ", e)
-            return None
+    def __init__(db_entry):
+        self.metadata = {field : value for field, value in zip(DB_ENTRY_FORMAT, db_entry)}
 
-    def get_executions_within_year_range(self, start_year, end_year):
-        """Returns a list of all of the executions that occurred within the specified year range (inclusive)
+    def get_value_of(self, field):
+        """Retrieves the stored value associated with the given field
 
         PARAMETERS:
-            start_year - the starting year of the range (inclusive)
-            end_year - the ending year of the range (inclusive)
+            field - string matching one of Execution.DB_ENTRY_FORMAT
 
         RETURN:
-            a list of all of the executions that occurred within this year range.
+            value for field provided; type may depend on field
         """
-        try:
-            cursor = self.connection.cursor()
-            query = "SELECT * FROM executions WHERE year BETWEEN " + str(start_year) + " AND " + str(end_year) + " ORDER BY year DESC"
-            cursor.execute(query)
-            return cursor.fetchall()
-
-        except Exception as e:
-            print ("Something went wrong when executing the query: ", e)
-            return None
-
-    def get_executions_by_state(self, state):
-        """Returns a list of all of the executions that occurred in the specified state
-
-        PARAMETERS:
-            state - the state of the executions
-
-        RETURN:
-            a list of all of the executions that occurred in this state
-        """
-        try:
-            cursor = self.connection.cursor()
-            query = "SELECT * FROM executions WHERE state = '" + state + "' ORDER BY state DESC"
-            cursor.execute(query)
-            return cursor.fetchall()
-
-        except Exception as e:
-            print ("Something went wrong when executing the query: ", e)
-            return None
-
-    def get_executions_by_county_of_conviction(self, county_number):
-        """Returns a list of all of the executions where conviction occurred in the specified county
-
-        PARAMETERS:
-            county_number - the FIPS code of the county of the executions
-
-        RETURN:
-            a list of all of the executions where conviction occurred in this county
-        """
-        pass
-
-    def get_executions_by_crime_committed(self, crime):
-        """Returns a list of all of the executions for the specified crime
-
-        PARAMETERS:
-            crime - the crime committed that resulted in execution
-
-        RETURN:
-            a list of all of the executions for this crime
-        """
-        pass
-
-    def get_executions_by_jurisdiction(self, jurisdiction):
-        """Returns a list of all of the executions that occurred in the specified type of jurisdiction
-
-           PARAMETERS:
-               jurisdiction - the authority under which the execution occurred (state, federal, military, etc.)
-
-           RETURN:
-               a list of all of the executions that occurred in this type of jurisdiction
-        """
-        pass
-
-    def get_executions_by_manner_of_execution(self, manner):
-        """Returns a list of all of the executions that used the specified method
-
-        PARAMETERS:
-            manner - the method of execution
-
-        RETURN:
-            a list of all of the executions that used this method
-        """
-        pass
-
-    def get_executions_by_sex(self, sex):
-        """Returns a list of all executions of people of the specified gender
-
-        PARAMETERS:
-            sex - the sex of the executee, i.e. 'male' or 'female'
-
-        RETURN:
-            a list of all the executions of people of this gender
-        """
-        pass
+        return self.metadata[field]
 
 
 def establish_connection(credentials, dbname=None):
@@ -217,36 +241,8 @@ def main():
     connection = establish_connection(TEAM_CREDENTIALS)
     data_source = DataSource(connection)
 
-    # Execute implemented queries, then print successful retrievals (up to 10 items per query)
-
-    results_year = data_source.get_executions_within_year_range(1899, 1900)
-    results_state = data_source.get_executions_by_state("Maine")
-    results_age = data_source.get_executions_within_age_range(50, 55)
-
-    if results_year is not None:
-        print("Query year results: ")
-        print(len(results_year))
-        print(type(results_year))
-        for item in results_year[:10]:
-            print(item)
-
-    if results_state is not None:
-        print("Query state results: ")
-        print(len(results_state))
-        print(type(results_age))
-        for item in results_state[:10]:
-            print(item)
-
-    if results_age is not None:
-        print("Query age results: ")
-        print(len(results_age))
-        print(type(results_age))
-        for item in results_age[:10]:
-            print(item)
-
     # Disconnect from database
     connection.close()
-
 
 if __name__ == "__main__":
     main()
