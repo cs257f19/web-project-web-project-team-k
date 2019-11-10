@@ -1,0 +1,17 @@
+<h2>Search Results</h2>
+<p>Your search for executions in 1846 had results.</p>
+<table id="search-results">
+  <tr>
+    <th>Age at Execution</th>
+    <th>State of Execution</th>
+    <th>Crime Committed</th>
+    <th>Race</th>
+    <th>Month</th>
+  </tr>
+  {% for result in results %}
+  <tr>
+    {% for data in result %}
+    <td>{{ data|e }}</td>
+    {% endfor %}
+  </tr>
+  {% endfor %}

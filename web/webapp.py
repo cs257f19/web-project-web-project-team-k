@@ -14,9 +14,21 @@ def my_form_post():
     processed_text = text.upper()
     return processed_text
 
-@app.route('/interactor')
+@app.route('/interactor/')
 def interactor():
-    return render_template('interactor.html')
+    results = [
+        (30, "Texas", "Murder", "Black", "January"),
+        (55, "Florida", "Arson", "White", "January")
+    ]
+    return render_template('interactor.html', results=results)
+
+@app.route('/about/data/')
+def about_data():
+    return render_template('about-data.html')
+
+@app.route('/about/project/')
+def about_project():
+    return render_template('about-project.html')
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
