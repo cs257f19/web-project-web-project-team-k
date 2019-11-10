@@ -1,0 +1,89 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  {% block head %}
+  <meta charset="utf-8">
+  <title>D.P.R.E.S.S.</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="manifest" href="{{ url_for('static',filename='site.webmanifest') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static',filename='icon.png') }}">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed&display=failure" rel="stylesheet">
+  <link rel="stylesheet" type= "text/css" href="{{ url_for('static',filename='styles/normalize.css') }}">
+  <link rel="stylesheet" type= "text/css" href="{{ url_for('static',filename='styles/main.css') }}">
+  <link rel="shortcut icon" href="{{ url_for('static',filename='facivon.ico') }}">
+
+  <meta name="theme-color" content="#fafafa">
+  {% endblock %}
+</head>
+
+<body>
+  <!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+
+  <a class="sr-only focusable" href="#maincontent">Skip to main content</a>
+  <!-- Header -->
+  <header id="site-header">
+    {% block header %}
+    <div>
+      <a href="index.html"><img src="{{ url_for('static',filename='icon.png') }}" id="site-icon"/></a>
+      <h1 id="site-title"> Death Penalty Review: Execution Statistics from the States </h1>
+    </div>
+    <div>
+      <p id="site-tagline"> The history of sentences that ended lives. </p>
+    </div>
+    {% endblock %}
+  </header>
+  <header id="main-navbar">
+    {% block main_navigation %}
+    {% set navigation_bar = [
+      ('/', 'index', 'Home'),
+      ('/interactor/', 'interactor', 'Interactive Statistics'),
+      ('/about/data/', 'about-data', 'About the Data'),
+      ('/about/project/', 'about-project', 'About the Project')
+    ] -%}
+
+    {% set active_page = active_page|default('index') -%}
+    <div id="navbar-head"></div>
+    <ul class="navbar-list">
+      <li id="anchor-tab"><a href="/" tabindex=-1>D P R E S S</a></li>
+        {% for href, id, caption in navigation_bar %}
+        <li{% if id==active_page %} id="active-tab" {% endif %}><a href="{{ href|e }}">
+          {{ caption|e }}
+        </a></li>
+        {% endfor %}
+    </ul>
+    <div id="navbar-foot"></div>
+    {% endblock %}
+  </header>
+
+  <!-- Main content -->
+  <main id="maincontent">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <!-- Scripts -->
+  {% block scripts %}
+  <script src="{{ url_for('static',filename='scripts/vendor/modernizr-3.7.1.min.js') }}"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="{{ url_for('static',filename='scripts/vendor/jquery-3.4.1.min.js') }}"><\/script>')</script>
+  <script src="{{ url_for('static',filename='scripts/plugins.js') }}"></script>
+  <script src="{{ url_for('static',filename='scripts/main.js') }}"></script>
+  {% endblock %}
+
+  <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID.
+  <script>
+    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
+    ga('create', 'UA-XXXXX-Y', 'auto'); ga('set','transport','beacon'); ga('send', 'pageview')
+  </script>
+  <script src="https://www.google-analytics.com/analytics.js" async></script>
+  -->
+</body>
+
+</html>
