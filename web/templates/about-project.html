@@ -1,0 +1,22 @@
+{% extends "layout.html" -%}
+{% set active_page = 'about-project' %}
+{% block content -%}
+  <h1> About the Project </h1>
+  <h2> About Us </h2>
+  <p>
+    This website was created by Judi Bush, Matt Stecklow, and Luna Yee. Its
+    primary purpose is to provide access to interesting and potentially useful
+    information, and its secondary purpose is to practice web development and
+    proper coding practices.
+  </p>
+  <h2> Attribution </h2>
+  <p>
+    This website was built using the <a href="https://html5boilerplate.com/">HTML5 Boilerplate</a>
+    template (v7.2.0), and incorporates images from
+    <a href="https://www.toptal.com/designers/subtlepatterns/">Subtle Patterns by Toptal</a>.
+    Database integration is accomplished using <a href="https://www.postgresql.org/">PostgreSQL</a>.
+  </p>
+  <p>
+    The data used on the site are from the <a href="https://www.icpsr.umich.edu/icpsrweb/">ICPSR database</a>;
+    more details are available on the <a href="about-data.html">About the Data</a> page.
+{%- endblock content %}
