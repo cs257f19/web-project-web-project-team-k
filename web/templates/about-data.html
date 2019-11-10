@@ -1,31 +1,6 @@
 {% extends "layout.html" -%}
 {% set active_page = 'index' %}
 {% block content -%}
-  <a class="sr-only focusable" href="#maincontent">Skip to main content</a>
-  <!-- Header -->
-  <header id="site-header">
-    <div>
-      <a href="index.html"><img src="icon.png" id="site-icon"/></a>
-      <h1 id="site-title"> Death Penalty Review: Execution Statistics from the States </h1>
-    </div>
-    <div>
-      <p id="site-tagline"> The history of sentences that ended lives. </p>
-    </div>
-  </header>
-  <header id="main-navbar">
-    <div id="navbar-head"></div>
-    <ul class="navbar-list">
-      <li id="anchor-tab"><a href="index.html" tabindex=-1>D P R E S S</a></li>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="interactor.html">Interactive Statistics</a></li>
-      <li id="active-tab"><a href="about-data.html">About the Data</a></li>
-      <li><a href="about-project.html">About the Project</a></li>
-    </ul>
-    <div id="navbar-foot"></div>
-  </header>
-
-  <!-- Main content -->
-  <main id="maincontent">
     <h1> About the Dataset</h1>
     <h2>Data Collection</h2>
     <p>This data is from a ICPSR data collection published in 2004 on the
@@ -51,12 +26,4 @@
     EXECUTIONS IN THE UNITED STATES, 1608-2002: THE ESPY FILE [Computer file].
     4th ICPSR ed. Compiled by M. Watt Espy and John Ortiz Smykla, University of Alabama.
     Ann Arbor, MI: Inter-university Consortium for Political and Social Research [producer and distributor], 2004.</p>
-  </main>
-
-  <!-- Scripts -->
-  <script src="js/vendor/modernizr-3.7.1.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
-  <script src="js/plugins.js"></script>
-  <script src="js/main.js"></script>
 {%- endblock content %}
