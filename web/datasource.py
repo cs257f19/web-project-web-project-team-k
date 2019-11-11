@@ -210,8 +210,11 @@ class Execution:
     def __init__(self, db_entry):
         self.metadata = {field : value for field, value in zip(DB_ENTRY_FORMAT, db_entry)}
 
-    def to_dict(self):
-        return self.metadata
+    def to_dict(self, alias=True):
+        execution_dict = self.metadata
+        if alias:
+            execution_dict = {DB_ENTRY_ALIASES[field]: value for field, value in execution_dict.items()}
+        return execution_dict
 
     def get_value_of(self, field):
         """Retrieves the stored value associated with the given field

@@ -28,7 +28,6 @@ def interactor():
         data_source = ds.DataSource(connection)
         results = data_source.get_executions_by_race(search_term)
         results = [result.to_dict() for result in results]
-        print(results[0])
         connection.close()
     return render_template('interactor.html',
                            display_fields=display_fields, results=results)

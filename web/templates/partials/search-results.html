@@ -9,7 +9,11 @@
   {% for result in results %}
   <tr>
     {% for field in display_fields %}
-    <td>{{ result.get(field)|e }}</td>
+    <td>
+    {% if result.get(field) is not none %}
+      {{ result.get(field)|e }}
+    {% endif %}
+    </td>
     {% endfor %}
   </tr>
   {% endfor %}
