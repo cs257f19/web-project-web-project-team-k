@@ -6,23 +6,18 @@
     of those involved. To ensure the protection of that confidentiality, <strong>do
     not attempt to use this dataset in order to identify specific individuals.</strong></blockquote></a>
 
-  <h2>Keyword Search</h2>
-  <form>
-    <input type="text" placeholder="Search...">
-    <button>Go</button>
+  <h2>Search by Race</h2>
+  <form method="GET">
+    <select name="race">
+      <option disabled selected value>Select...</option>
+      <option value="white">White</option>
+      <option value="black">Black</option>
+      <option value="asian-pacific il">Asian/Pacific Islander</option>
+      <option value="native american">Native American</option>
+      <option value="hispanic">Hispanic</option>
+    </select>
+    <input type="submit" value="Submit">
   </form>
-
-  <a href="advanced-search.html">Advanced Search</a>
-
-  <h2>Search by Category</h2>
-  <select>
-    <option>Select...</option>
-    <option>County</option>
-    <option>State</option>
-    <option>Crime</option>
-    <option>Year</option>
-  </select>
-  <button>Go</button>
 
   {% if display_fields is not none %}
     {% include "partials/search-results.html" %}

@@ -17,20 +17,35 @@ def my_form_post():
 
 @app.route('/interactor')
 def interactor():
-    display_fields = request.args.get('display')
-    if display_fields is not None:
-        display_fields = [ds.DB_ENTRY_ALIASES[field] for field in display_fields.split(',')]
+    display_fields = ['race', 'age', 'year', 'manner', 'state']
+    display_fields = [ds.DB_ENTRY_ALIASES[field] for field in display_fields]
+    # display_fields = request.args.get('display')
+    # if display_fields is not None:
+    #     display_fields = [ds.DB_ENTRY_ALIASES[field] for field in display_fields.split(',')]
     results = []
-    search = request.args.get('search')
-    if search is not None:
-        search_field, search_term = search.split(':')
+    race = request.args.get('race')
+    if race is not None:
         connection = ds.establish_connection(ds.TEAM_CREDENTIALS)
         data_source = ds.DataSource(connection)
-        results = data_source.get_executions_by_race(search_term)
+        results = data_source.get_executions_by_race(race)
         results = [result.to_dict() for result in results]
         connection.close()
     return render_template('interactor.html',
                            display_fields=display_fields, results=results)
+
+# @app.route('/interactor', methods = ['POST', 'GET'])
+# def interactor():
+#     if request.method == 'POST':
+#         display_fields = request.form.get('display')
+#         print(display_fields)
+#         results = []
+#         # ds = datasource.DataSource()
+#         # description = "Showing all names beginning with " + result.get("Letter") + " sorted alphabetically"
+#         # result = ds.getLetter(result.get("Letter"))
+#         return render_template('interactor.html', display_fields=display_fields, results=results)
+#
+#     else:
+#         return render_template('interactor.html', display_fields=None, results=[])
 
 @app.route('/about/data')
 def about_data():
