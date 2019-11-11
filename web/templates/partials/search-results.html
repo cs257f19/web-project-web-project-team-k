@@ -3,13 +3,13 @@
 <table id="search-results">
   <tr>
   {% for field in display_fields %}
-    <th>{{ field|e }}<th>
+    <th>{{ field|e }}</th>
   {% endfor %}
   </tr>
   {% for result in results %}
   <tr>
     {% for field in display_fields %}
-    <td>{{ result[field]|e }}</td>
+    <td>{{ result.get(field)|e }}</td>
     {% endfor %}
   </tr>
   {% endfor %}

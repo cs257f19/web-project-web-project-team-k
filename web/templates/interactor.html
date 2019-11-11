@@ -24,5 +24,7 @@
   </select>
   <button>Go</button>
 
-  {% include "partials/search-results.html" %}
+  {% if display_fields is not none %}
+    {% include "partials/search-results.html" %}
+  {% endif %}
 {%- endblock content %}

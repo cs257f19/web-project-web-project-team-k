@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template
 import json
 import sys
+import datasource as ds
 
 app = Flask(__name__)
 
@@ -14,19 +15,29 @@ def my_form_post():
     processed_text = text.upper()
     return processed_text
 
-@app.route('/interactor/')
+@app.route('/interactor')
 def interactor():
-    results = [
-        (30, "Texas", "Murder", "Black", "January"),
-        (55, "Florida", "Arson", "White", "January")
-    ]
-    return render_template('interactor.html', results=results)
+    display_fields = request.args.get('display')
+    if display_fields is not None:
+        display_fields = [ds.DB_ENTRY_ALIASES[field] for field in display_fields.split(',')]
+    results = []
+    search = request.args.get('search')
+    if search is not None:
+        search_field, search_term = search.split(':')
+        connection = ds.establish_connection(ds.TEAM_CREDENTIALS)
+        data_source = ds.DataSource(connection)
+        results = data_source.get_executions_by_race(search_term)
+        results = [result.to_dict() for result in results]
+        print(results[0])
+        connection.close()
+    return render_template('interactor.html',
+                           display_fields=display_fields, results=results)
 
-@app.route('/about/data/')
+@app.route('/about/data')
 def about_data():
     return render_template('about-data.html')
 
-@app.route('/about/project/')
+@app.route('/about/project')
 def about_project():
     return render_template('about-project.html')
 

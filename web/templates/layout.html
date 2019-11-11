@@ -43,9 +43,9 @@
     {% block main_navigation %}
     {% set navigation_bar = [
       ('/', 'index', 'Home'),
-      ('/interactor/', 'interactor', 'Interactive Statistics'),
-      ('/about/data/', 'about-data', 'About the Data'),
-      ('/about/project/', 'about-project', 'About the Project')
+      ('/interactor', 'interactor', 'Interactive Statistics'),
+      ('/about/data', 'about-data', 'About the Data'),
+      ('/about/project', 'about-project', 'About the Project')
     ] -%}
 
     {% set active_page = active_page|default('index') -%}
