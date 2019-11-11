@@ -9,43 +9,23 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/', methods=['POST'])
-def my_form_post():
-    text = request.form['text']
-    processed_text = text.upper()
-    return processed_text
-
 @app.route('/interactor')
 def interactor():
     display_fields = ['race', 'age', 'year', 'manner', 'state']
     display_fields = [ds.DB_ENTRY_ALIASES[field] for field in display_fields]
-    # display_fields = request.args.get('display')
-    # if display_fields is not None:
-    #     display_fields = [ds.DB_ENTRY_ALIASES[field] for field in display_fields.split(',')]
-    results = []
     race = request.args.get('race')
-    if race is not None:
-        connection = ds.establish_connection(ds.TEAM_CREDENTIALS)
-        data_source = ds.DataSource(connection)
-        results = data_source.get_executions_by_race(race)
-        results = [result.to_dict() for result in results]
-        connection.close()
+    results = get_results_from_race(race) if race is not None else []
     return render_template('interactor.html',
                            display_fields=display_fields, results=results)
 
-# @app.route('/interactor', methods = ['POST', 'GET'])
-# def interactor():
-#     if request.method == 'POST':
-#         display_fields = request.form.get('display')
-#         print(display_fields)
-#         results = []
-#         # ds = datasource.DataSource()
-#         # description = "Showing all names beginning with " + result.get("Letter") + " sorted alphabetically"
-#         # result = ds.getLetter(result.get("Letter"))
-#         return render_template('interactor.html', display_fields=display_fields, results=results)
-#
-#     else:
-#         return render_template('interactor.html', display_fields=None, results=[])
+def get_results_from_race(race):
+    connection = ds.establish_connection(ds.TEAM_CREDENTIALS)
+    data_source = ds.DataSource(connection)
+    results = data_source.get_executions_by_race(race)
+    results = [result.to_dict() for result in results]
+    connection.close()
+
+    return results
 
 @app.route('/about/data')
 def about_data():
