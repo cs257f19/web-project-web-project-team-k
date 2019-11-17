@@ -16,6 +16,10 @@
       <option value="native american">Native American</option>
       <option value="hispanic">Hispanic</option>
     </select>
+    <input type="submit" value="Submit">
+  </form>
+
+  {% include "partials/advanced-search.html" %}
 
   {% if display_fields is not none %}
     {% include "partials/search-results.html" %}

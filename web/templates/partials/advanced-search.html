@@ -1,0 +1,20 @@
+<form method="GET">
+  {% if all_fields is not none %}
+  {% for field in all_fields %}
+  <fieldset>
+    {{ field_aliases.get(field)|e }} is
+    <select class="values" name="{{ field }}">
+      <option disabled selected value>[Select...]</option>
+      {% if field in unique_values %}
+      {% for value in unique_values.get(field) %}
+      <option value="{{ value|e }}">{{ value|e }}</option>
+      {% endfor %}
+      {% endif %}
+    </select>
+  </fieldset>
+  {% endfor %}
+  <input type="submit" value="Submit">
+  {% else %}
+  The server encountered an error.
+  {% endif %}
+</form>

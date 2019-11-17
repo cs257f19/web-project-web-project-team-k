@@ -5,7 +5,7 @@ CREATE TABLE executions (
   place text,
   jurisdiction text,
   crime text,
-  method text,
+  manner text,
   day int,
   month int,
   year int,
