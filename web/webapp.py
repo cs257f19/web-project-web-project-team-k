@@ -33,7 +33,7 @@ def get_results_from_race(race):
 def get_all_unique_values():
     connection = ds.establish_connection(ds.TEAM_CREDENTIALS)
     data_source = ds.DataSource(connection)
-    unique_values = {field: ds.get_unique_values(field) for field in ds.DB_ENTRY_FIELDS}
+    unique_values = {field: data_source.get_unique_values(field) for field in ds.DB_ENTRY_FIELDS}
     return unique_values
 
 @app.route('/about/data')
