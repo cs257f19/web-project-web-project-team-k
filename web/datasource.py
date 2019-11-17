@@ -66,6 +66,8 @@ class DataSource:
             values = []
             for value in output:
                 values.extend(value)
+            values = list(filter(None, values))
+            values.sort()
 
             return values
 
@@ -233,7 +235,7 @@ class Execution:
     def __init__(self, db_entry):
         self.metadata = {field : value for field, value in zip(DB_ENTRY_FIELDS, db_entry)}
 
-    def to_dict(self, alias=True):
+    def to_dict(self, alias=False):
         """Returns a dict representation of the Execution
 
         PARAMETERS:
