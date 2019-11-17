@@ -191,6 +191,21 @@ class DataSource:
         query = "SELECT * FROM executions WHERE sex = '" + sex + "' ORDER BY year DESC"
         return self.execute_query(query)
 
+    def get_executions_by_field(self, field, qualifier):
+        """Returns a list of all the executions that fit the qualifier for the field
+
+        PARAMETERS:
+            field - the column of the table the query searches
+            qualifier - the specific data in the table the query searches for
+
+        Return:
+            a list of all the executions that fit the Query
+        """
+        field = field.title()
+        qualifier = qualifier.title()
+        query = "SELECT * FROM executions WHERE '" + field + "' = '" + qualifier + "' ORDER BY year DESC"
+        return self.execute_query(query)
+
     def execute_query(self, query):
         """Attempts to execute a query on the database.
 
