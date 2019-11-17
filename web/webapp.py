@@ -14,9 +14,12 @@ def interactor():
     display_fields = ['race', 'age', 'year', 'manner', 'state']
     display_fields = [ds.DB_FIELD_ALIASES[field] for field in display_fields]
     race = request.args.get('race')
+    all_fields = ds.DB_ENTRY_FIELDS
+    unique_values = get_all_unique_values()
     results = get_results_from_race(race) if race is not None else []
     return render_template('interactor.html',
-                           display_fields=display_fields, results=results)
+                           display_fields=display_fields, results=results,
+                           all_fields=all_fields, unique_values=unique_values)
 
 def get_results_from_race(race):
     connection = ds.establish_connection(ds.TEAM_CREDENTIALS)
@@ -26,6 +29,12 @@ def get_results_from_race(race):
     connection.close()
 
     return results
+
+def get_all_unique_values():
+    connection = ds.establish_connection(ds.TEAM_CREDENTIALS)
+    data_source = ds.DataSource(connection)
+    unique_values = {field: ds.get_unique_values(field) for field in ds.DB_ENTRY_FIELDS}
+    return unique_values
 
 @app.route('/about/data')
 def about_data():
