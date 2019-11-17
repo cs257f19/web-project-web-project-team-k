@@ -12,7 +12,7 @@ def index():
 @app.route('/interactor')
 def interactor():
     display_fields = ['race', 'age', 'year', 'manner', 'state']
-    display_fields = [ds.DB_ENTRY_ALIASES[field] for field in display_fields]
+    display_fields = [ds.DB_FIELD_ALIASES[field] for field in display_fields]
     race = request.args.get('race')
     results = get_results_from_race(race) if race is not None else []
     return render_template('interactor.html',

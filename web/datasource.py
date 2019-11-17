@@ -14,18 +14,19 @@ TEAM_CREDENTIALS = {
 }
 
 
-DB_ENTRY_FORMAT = ["race", "age", "place", "jurisdiction", "crime", "manner", "day", "month",
+"""Must be formatted in the same order as the SQL table."""
+DB_ENTRY_FIELDS = ["race", "age", "place", "jurisdiction", "crime", "manner", "day", "month",
                    "year", "state", "county", "sex"]
 
-DB_ENTRY_ALIASES = { entry: entry.title() for entry in DB_ENTRY_FORMAT }
-DB_ENTRY_ALIASES.update({
+DB_FIELD_ALIASES = { entry: entry.title() for entry in DB_ENTRY_FORMAT }
+DB_FIELD_ALIASES.update({
     "age": "Age at Execution",
     "place": "Place of Execution",
     "jurisdiction": "Jurisdiction of Execution",
     "crime": "Crime Committed",
     "manner": "Manner of Execution",
     "state": "State of Execution",
-    "county": "County of Conviction"
+    "county": "County of Conviction (Code)"
 })
 
 
@@ -47,6 +48,25 @@ class DataSource:
             a new DataSource that will utilize this connection
         """
         self.connection = connection
+
+    def get_unique_values(self, field):
+        """Retrieves unique values of a field in the dataset
+
+        PARAMETERS:
+            field - the field to search (string-like)
+
+        RETURN:
+            a list of all unique elements found for the field
+        """
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("SELECT DISTINCT " + field + " FROM executions")
+            result = cursor.fetchall()
+            return result
+
+        except Exception as e:
+            print ("Something went wrong when executing the query: ", e)
+            return None
 
     def get_executions_by_race(self, race):
         """Returns a list of all of the executions on persons of the specified race.
@@ -180,8 +200,6 @@ class DataSource:
             cursor = self.connection.cursor()
             cursor.execute(query)
             result = cursor.fetchall()
-            if len(result) == 0:
-                return None
             return Execution.convert_to_executions(result)
 
         except Exception as e:
@@ -211,9 +229,17 @@ class Execution:
         self.metadata = {field : value for field, value in zip(DB_ENTRY_FORMAT, db_entry)}
 
     def to_dict(self, alias=True):
+        """Returns a dict representation of the Execution
+
+        PARAMETERS:
+            alias - whether to alias the fields per DB_FIELD_ALIASES
+
+        RETURN:
+            a dict of {field(aliased): value} pairs
+        """
         execution_dict = self.metadata
         if alias:
-            execution_dict = {DB_ENTRY_ALIASES[field]: value for field, value in execution_dict.items()}
+            execution_dict = {DB_FIELD_ALIASES[field]: value for field, value in execution_dict.items()}
         return execution_dict
 
     def get_value_of(self, field):
