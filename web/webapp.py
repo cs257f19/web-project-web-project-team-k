@@ -15,6 +15,7 @@ def interactor():
     display_fields = [ds.DB_FIELD_ALIASES[field] for field in display_fields]
     race = request.args.get('race')
     all_fields = ds.DB_ENTRY_FIELDS
+    all_fields = [ds.DB_FIELD_ALIASES[field] for field in all_fields]
     unique_values = get_all_unique_values()
     results = get_results_from_race(race) if race is not None else []
     return render_template('interactor.html',
@@ -34,6 +35,8 @@ def get_all_unique_values():
     connection = ds.establish_connection(ds.TEAM_CREDENTIALS)
     data_source = ds.DataSource(connection)
     unique_values = {field: data_source.get_unique_values(field) for field in ds.DB_ENTRY_FIELDS}
+    print(unique_values)
+
     return unique_values
 
 @app.route('/about/data')

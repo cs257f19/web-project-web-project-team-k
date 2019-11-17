@@ -61,8 +61,13 @@ class DataSource:
         try:
             cursor = self.connection.cursor()
             cursor.execute("SELECT DISTINCT " + field + " FROM executions")
-            result = cursor.fetchall()
-            return result
+            output = cursor.fetchall()
+            # SELECT DISTINCT returns a list of 1-length tuples
+            values = []
+            for value in output:
+                values.extend(value)
+
+            return values
 
         except Exception as e:
             print ("Something went wrong when executing the query: ", e)
