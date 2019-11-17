@@ -201,9 +201,8 @@ class DataSource:
         Return:
             a list of all the executions that fit the Query
         """
-        field = field.title()
-        qualifier = qualifier.title()
-        query = "SELECT * FROM executions WHERE '" + field + "' = '" + qualifier + "' ORDER BY year DESC"
+        qualifier = qualifier
+        query = "SELECT * FROM executions WHERE " + field + " = '" + qualifier + "' ORDER BY year DESC"
         return self.execute_query(query)
 
     def execute_query(self, query):

@@ -1,9 +1,9 @@
 <form method="GET">
   {% if all_fields is not none %}
-  {% for field in all_fields %}
+  {% for field in select_fields %}
   <fieldset>
     {{ field_aliases.get(field)|e }} is
-    <select class="values" name="{{ field }}">
+    <select name="{{ field|e }}">
       <option disabled selected value>[Select...]</option>
       {% if field in unique_values %}
       {% for value in unique_values.get(field) %}
@@ -11,6 +11,12 @@
       {% endfor %}
       {% endif %}
     </select>
+  </fieldset>
+  {% endfor %}
+  {% for field in input_fields %}
+  <fieldset>
+    {{ field_aliases.get(field)|e }} is
+    <input name="{{ field|e }}" type="number">
   </fieldset>
   {% endfor %}
   <input type="submit" value="Submit">

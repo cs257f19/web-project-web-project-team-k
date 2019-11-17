@@ -12,19 +12,31 @@ def index():
 @app.route('/interactor')
 def interactor():
     display_fields = ['race', 'age', 'year', 'manner', 'state']
-    race = request.args.get('race')
-    all_fields = ds.DB_ENTRY_FIELDS
+    search_terms = {field: request.args.get(field) for field in ds.DB_ENTRY_FIELDS}
+    field_aliases = ds.DB_FIELD_ALIASES
     unique_values = get_all_unique_values()
-    results = get_results_from_race(race) if race is not None else []
-    return render_template('interactor.html', field_aliases=ds.DB_FIELD_ALIASES,
+    select_fields = []
+    input_fields = []
+    for field in ds.DB_ENTRY_FIELDS:
+        if are_numeric_values(unique_values[field]):
+            input_fields.append(field)
+        else:
+            select_fields.append(field)
+    results = get_results(search_terms)
+    return render_template('interactor.html', field_aliases=field_aliases,
                            display_fields=display_fields, results=results,
-                           all_fields=all_fields, unique_values=unique_values)
+                           input_fields=input_fields, select_fields=select_fields,
+                           unique_values=unique_values)
 
-def get_results_from_race(race):
+def get_results(search_terms):
     connection = ds.establish_connection(ds.TEAM_CREDENTIALS)
     data_source = ds.DataSource(connection)
-    results = data_source.get_executions_by_race(race)
-    results = [result.to_dict() for result in results]
+    # TODO: fix this
+    results = []
+    for field, value in search_terms.items():
+        if value is not None and value is not "":
+            results = data_source.get_executions_by_field(field, value)
+            results = [result.to_dict() for result in results]
     connection.close()
 
     return results
@@ -35,6 +47,13 @@ def get_all_unique_values():
     unique_values = {field: data_source.get_unique_values(field) for field in ds.DB_ENTRY_FIELDS}
 
     return unique_values
+
+def are_numeric_values(values):
+    for value in values:
+        if not str(value).isnumeric():
+            return False
+
+    return True
 
 @app.route('/about/data')
 def about_data():
