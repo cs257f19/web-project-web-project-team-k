@@ -18,7 +18,7 @@ TEAM_CREDENTIALS = {
 DB_ENTRY_FIELDS = ["race", "age", "place", "jurisdiction", "crime", "manner", "day", "month",
                    "year", "state", "county", "sex"]
 
-DB_FIELD_ALIASES = { entry: entry.title() for entry in DB_ENTRY_FORMAT }
+DB_FIELD_ALIASES = { entry: entry.title() for entry in DB_ENTRY_FIELDS }
 DB_FIELD_ALIASES.update({
     "age": "Age at Execution",
     "place": "Place of Execution",
@@ -226,7 +226,7 @@ class Execution:
         return [Execution(entry) for entry in db_entry_list]
 
     def __init__(self, db_entry):
-        self.metadata = {field : value for field, value in zip(DB_ENTRY_FORMAT, db_entry)}
+        self.metadata = {field : value for field, value in zip(DB_ENTRY_FIELDS, db_entry)}
 
     def to_dict(self, alias=True):
         """Returns a dict representation of the Execution
