@@ -6,8 +6,6 @@ CREATE TABLE executions (
   jurisdiction text,
   crime text,
   manner text,
-  day int,
-  month int,
   year int,
   state text,
   county int,

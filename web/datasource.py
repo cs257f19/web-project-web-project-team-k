@@ -15,7 +15,7 @@ TEAM_CREDENTIALS = {
 
 
 """Must be formatted in the same order as the SQL table."""
-DB_ENTRY_FIELDS = ["race", "age", "place", "jurisdiction", "crime", "manner", "day", "month",
+DB_ENTRY_FIELDS = ["race", "age", "place", "jurisdiction", "crime", "manner",
                    "year", "state", "county", "sex"]
 
 DB_FIELD_ALIASES = { entry: entry.title() for entry in DB_ENTRY_FIELDS }
