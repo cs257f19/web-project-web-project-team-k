@@ -7,7 +7,7 @@
   {% endfor %}
   </tr>
   {% for result in results %}
-  <tr>
+  <tr class="{{ loop.cycle('odd', 'even') }}">
     {% for field in display_fields %}
     <td>
     {% if result.get(field) is not none %}

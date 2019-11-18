@@ -273,13 +273,17 @@ h2 {
   border-bottom: 2px solid black;
 }
 
-#search-results tr {
-  background-color: rgb(225, 225, 225);
+#search-results tr.odd {
+  background-color: rgb(235, 235, 235);
+}
+
+#search-results tr.even {
+  background-color: rgb(220, 220, 220);
 }
 
 #search-results tr:focus,
 #search-results tr:hover {
-  background-color: rgb(215, 215, 215);
+  background-color: rgb(245, 245, 245);
 }
 
 
