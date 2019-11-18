@@ -20,13 +20,9 @@ DB_ENTRY_FIELDS = ["race", "age", "place", "jurisdiction", "crime", "manner", "d
 
 DB_FIELD_ALIASES = { entry: entry.title() for entry in DB_ENTRY_FIELDS }
 DB_FIELD_ALIASES.update({
-    "age": "Age at Execution",
-    "place": "Place of Execution",
-    "jurisdiction": "Jurisdiction of Execution",
     "crime": "Crime Committed",
     "manner": "Manner of Execution",
-    "state": "State of Execution",
-    "county": "County of Conviction (Code)"
+    "county": "County Code"
 })
 
 

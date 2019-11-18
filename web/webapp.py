@@ -11,7 +11,7 @@ def index():
 
 @app.route('/interactor')
 def interactor():
-    display_fields = ['race', 'age', 'year', 'manner', 'state']
+    display_fields = ds.DB_ENTRY_FIELDS
     search_terms = {field: request.args.get(field) for field in ds.DB_ENTRY_FIELDS}
     field_aliases = ds.DB_FIELD_ALIASES
     unique_values = get_all_unique_values()

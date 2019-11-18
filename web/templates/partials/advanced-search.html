@@ -16,7 +16,7 @@
   {% for field in input_fields %}
   <fieldset>
     {{ field_aliases.get(field)|e }} is
-    <input name="{{ field|e }}" type="number">
+    <input name="{{ field|e }}" type="number" autocomplete="off">
   </fieldset>
   {% endfor %}
   <input type="submit" value="Submit">
