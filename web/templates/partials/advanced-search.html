@@ -5,7 +5,7 @@
   <fieldset>
     {{ field_aliases.get(field)|e }} is
     <select name="{{ field|e }}">
-      <option value {% if search_terms.get(field) is none %} selected {% endif %}>[Select...]</option>
+      <option value {% if search_terms.get(field) is none %} selected {% endif %}></option>
       {% if field in unique_values %}
       {% for value in unique_values.get(field) %}
       <option value="{{ value|e }}" {% if search_terms.get(field) == value %} selected {% endif %}>{{ value|e }}</option>
