@@ -31,12 +31,16 @@ def interactor():
 def get_results(search_terms):
     connection = ds.establish_connection(ds.TEAM_CREDENTIALS)
     data_source = ds.DataSource(connection)
-    # TODO: fix this
+    # TODO: clean this
     results = []
     for field, value in search_terms.items():
         if value is not None and value is not "":
-            results = data_source.get_executions_by_field(field, value)
-            results = [result.to_dict() for result in results]
+            field_results = data_source.get_executions_by_field(field, value)
+            field_results = [result.to_dict() for result in field_results]
+            if len(results) == 0:
+                results = field_results
+            else:
+                results = [result for result in results if result in field_results]
     connection.close()
 
     return results
