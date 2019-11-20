@@ -26,7 +26,7 @@ def interactor():
     return render_template('interactor.html', field_aliases=field_aliases,
                            display_fields=display_fields, results=results,
                            input_fields=input_fields, select_fields=select_fields,
-                           unique_values=unique_values)
+                           unique_values=unique_values, search_terms=search_terms)
 
 def get_results(search_terms):
     connection = ds.establish_connection(ds.TEAM_CREDENTIALS)

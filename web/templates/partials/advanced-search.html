@@ -4,10 +4,10 @@
   <fieldset>
     {{ field_aliases.get(field)|e }} is
     <select name="{{ field|e }}">
-      <option disabled selected value>[Select...]</option>
+      <option disabled value {% if search_terms.get(field) is none %} selected {% endif %}>[Select...]</option>
       {% if field in unique_values %}
       {% for value in unique_values.get(field) %}
-      <option value="{{ value|e }}">{{ value|e }}</option>
+      <option value="{{ value|e }}" {% if search_terms.get(field) == value %} selected {% endif %}>{{ value|e }}</option>
       {% endfor %}
       {% endif %}
     </select>
@@ -16,7 +16,7 @@
   {% for field in input_fields %}
   <fieldset>
     {{ field_aliases.get(field)|e }} is
-    <input name="{{ field|e }}" type="number" autocomplete="off">
+    <input name="{{ field|e }}" type="number" autocomplete="off" {% if search_terms.get(field) is not none %} value="{{ search_terms.get(field)|e }}" {% endif %}>
   </fieldset>
   {% endfor %}
   <input type="submit" value="Submit">
