@@ -16,12 +16,26 @@
   {% endfor %}
   {% for field in input_fields %}
   <fieldset>
-    {{ field_aliases.get(field)|e }} is between
+    {{ field_aliases.get(field)|e }} is
+    <input name="{{ field|e }}" type="number" autocomplete="off" {% if search_terms.get(field) is not none %} value="{{ search_terms.get(field)|e }}" {% endif %}>
+  </fieldset>
+  {% endfor %}
+  {% for field in range_fields %}
+  <fieldset>
+    {{ field_aliases.get(field)|e }} is at least
     <input name="{{ field|e }}!start" type="number" autocomplete="off" {% if search_terms.get(field + '!start') is not none %} value="{{ search_terms.get(field + '!start')|e }}" {% endif %}>
-    and
+    (and) at most
     <input name="{{ field|e }}!end" type="number" autocomplete="off" {% if search_terms.get(field + '!end') is not none %} value="{{ search_terms.get(field + '!end')|e }}" {% endif %}>
   </fieldset>
   {% endfor %}
+  {% if ordinal_fields is not none %}
+  <fieldset>
+      Sort by
+      {% for field in ordinal_fields %}
+      <input type="radio" name="order" value="{{ field|e }}" {% if search_terms.get('order') is not none and search_terms.get('order') == field %} checked {% endif %}> {{ field.title()|e }} </input>
+      {% endfor %}
+  </fieldset>
+  {% endif %}
   <input type="submit" value="Submit">
   <a href="interactor"><button type="button">Clear</button></a>
   {% else %}
