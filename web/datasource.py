@@ -188,8 +188,8 @@ class DataSource:
         query = "SELECT * FROM executions WHERE sex = '" + sex + "' ORDER BY year DESC"
         return self.execute_query(query)
 
-    def get_executions_by_field(self, field, qualifier):
-        """Returns a list of all the executions that fit the qualifier for the field
+    def get_executions_by_field_exact(self, field, qualifier):
+        """Returns a list of all the executions that exactly fit the qualifier for the field
 
         PARAMETERS:
             field - the column of the table the query searches
@@ -198,8 +198,33 @@ class DataSource:
         Return:
             a list of all the executions that fit the Query
         """
-        qualifier = qualifier
         query = "SELECT * FROM executions WHERE " + field + " = '" + qualifier + "' ORDER BY year DESC"
+        return self.execute_query(query)
+
+    def get_executions_by_field_lower_bound(self, field, start):
+        """Returns a list of all the executions where the field value >= the start value
+
+        PARAMETERS:
+            field - the column of the table the query searches, must be quantifiable
+            start - the start value of the range, inclusive
+
+        Return:
+            a list of all the executions that fit the Query
+        """
+        query = "SELECT * FROM executions WHERE " + field + " >= '" + start + "' ORDER BY " + field + " DESC"
+        return self.execute_query(query)
+
+    def get_executions_by_field_upper_bound(self, field, end):
+        """Returns a list of all the executions where the field value <= the end value
+
+        PARAMETERS:
+            field - the column of the table the query searches, must be quantifiable
+            end - the end value of the range, inclusive
+
+        Return:
+            a list of all the executions that fit the Query
+        """
+        query = "SELECT * FROM executions WHERE " + field + " <= '" + end + "' ORDER BY " + field + " DESC"
         return self.execute_query(query)
 
     def execute_query(self, query):

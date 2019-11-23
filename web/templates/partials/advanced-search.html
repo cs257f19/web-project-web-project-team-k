@@ -16,8 +16,10 @@
   {% endfor %}
   {% for field in input_fields %}
   <fieldset>
-    {{ field_aliases.get(field)|e }} is
-    <input name="{{ field|e }}" type="number" autocomplete="off" {% if search_terms.get(field) is not none %} value="{{ search_terms.get(field)|e }}" {% endif %}>
+    {{ field_aliases.get(field)|e }} is between
+    <input name="{{ field|e }}!start" type="number" autocomplete="off" {% if search_terms.get(field + '!start') is not none %} value="{{ search_terms.get(field + '!start')|e }}" {% endif %}>
+    and
+    <input name="{{ field|e }}!end" type="number" autocomplete="off" {% if search_terms.get(field + '!end') is not none %} value="{{ search_terms.get(field + '!end')|e }}" {% endif %}>
   </fieldset>
   {% endfor %}
   <input type="submit" value="Submit">
