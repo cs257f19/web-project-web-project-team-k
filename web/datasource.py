@@ -14,18 +14,16 @@ TEAM_CREDENTIALS = {
 }
 
 
-DB_ENTRY_FORMAT = ["race", "age", "place", "jurisdiction", "crime", "manner", "day", "month",
+"""Must be formatted in the same order as the SQL table."""
+DB_ENTRY_FIELDS = ["race", "age", "subdivision", "jurisdiction", "crime", "manner",
                    "year", "state", "county", "sex"]
 
-DB_ENTRY_ALIASES = { entry: entry.title() for entry in DB_ENTRY_FORMAT }
-DB_ENTRY_ALIASES.update({
-    "age": "Age at Execution",
-    "place": "Place of Execution",
-    "jurisdiction": "Jurisdiction of Execution",
+DB_FIELD_ALIASES = { entry: entry.title() for entry in DB_ENTRY_FIELDS }
+DB_FIELD_ALIASES.update({
+    "subdivision": "Place of Execution",
     "crime": "Crime Committed",
     "manner": "Manner of Execution",
-    "state": "State of Execution",
-    "county": "County of Conviction"
+    "county": "County Code"
 })
 
 
@@ -48,120 +46,69 @@ class DataSource:
         """
         self.connection = connection
 
-    def get_executions_by_race(self, race):
-        """Returns a list of all of the executions on persons of the specified race.
+    def get_unique_values(self, field):
+        """Retrieves unique values of a field in the dataset
 
         PARAMETERS:
-            race - the race of the executee
+            field - the field to search (string-like)
 
         RETURN:
-            a list of all of the executions where the person is of the specified race
+            a list of all unique elements found for the field
         """
-        race = race.title()
-        query = "SELECT * FROM executions WHERE race = '" + race + "' ORDER BY year DESC"
-        return self.execute_query(query)
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("SELECT DISTINCT " + field + " FROM executions")
+            output = cursor.fetchall()
+            # SELECT DISTINCT returns a list of 1-length tuples
+            values = []
+            for value in output:
+                values.extend(value)
+            values = list(filter(None, values))
+            values.sort()
 
-    def get_executions_within_age_range(self, start_age, end_age):
-        """Returns a list of all of the executions that occurred within the specified age range (inclusive)
+            return values
+
+        except Exception as e:
+            print ("Something went wrong when executing the query: ", e)
+            return None
+
+    def get_executions_by_field_exact(self, field, qualifier):
+        """Returns a list of all the executions that exactly fit the qualifier for the field
 
         PARAMETERS:
-            start_age - the lower end of the age range (inclusive)
-            end_age - the upper end of the age range (inclusive)
+            field - the column of the table the query searches
+            qualifier - the specific data in the table the query searches for
 
-        RETURN:
-            a list of all of the executions that occurred within this age range
+        Return:
+            a list of all the executions that fit the Query
         """
-        query = "SELECT * FROM executions WHERE age BETWEEN " + str(start_age) + " AND " + str(end_age) + " ORDER BY age DESC"
+        query = "SELECT * FROM executions WHERE " + field + " = '" + qualifier + "' ORDER BY year DESC"
         return self.execute_query(query)
 
-    def get_executions_within_year_range(self, start_year, end_year):
-        """Returns a list of all of the executions that occurred within the specified year range (inclusive)
+    def get_executions_by_field_lower_bound(self, field, start):
+        """Returns a list of all the executions where the field value >= the start value
 
         PARAMETERS:
-            start_year - the starting year of the range (inclusive)
-            end_year - the ending year of the range (inclusive)
+            field - the column of the table the query searches, must be quantifiable
+            start - the start value of the range, inclusive
 
-        RETURN:
-            a list of all of the executions that occurred within this year range.
+        Return:
+            a list of all the executions that fit the Query
         """
-        query = "SELECT * FROM executions WHERE year BETWEEN " + str(start_year) + " AND " + str(end_year) + " ORDER BY year DESC"
+        query = "SELECT * FROM executions WHERE " + field + " >= '" + start + "' ORDER BY " + field + " DESC"
         return self.execute_query(query)
 
-    def get_executions_by_state(self, state):
-        """Returns a list of all of the executions that occurred in the specified state
+    def get_executions_by_field_upper_bound(self, field, end):
+        """Returns a list of all the executions where the field value <= the end value
 
         PARAMETERS:
-            state - the state of the executions
+            field - the column of the table the query searches, must be quantifiable
+            end - the end value of the range, inclusive
 
-        RETURN:
-            a list of all of the executions that occurred in this state
+        Return:
+            a list of all the executions that fit the Query
         """
-        state = state.title()
-        query = "SELECT * FROM executions WHERE state = '" + state + "' ORDER BY year DESC"
-        return self.execute_query(query)
-
-    def get_executions_by_county_of_conviction(self, county_number):
-        """Returns a list of all of the executions where conviction occurred in the specified county
-
-        PARAMETERS:
-            county_number - the FIPS code of the county of the executions
-
-        RETURN:
-            a list of all of the executions where conviction occurred in this county
-        """
-        query = "SELECT * FROM executions WHERE county = '" + str(county) + "' ORDER BY year DESC"
-        return self.execute_query(query)
-
-    def get_executions_by_crime_committed(self, crime):
-        """Returns a list of all of the executions for the specified crime
-
-        PARAMETERS:
-            crime - the crime committed that resulted in execution
-
-        RETURN:
-            a list of all of the executions for this crime
-        """
-        crime = crime.title()
-        query = "SELECT * FROM executions WHERE crime = '" + crime + "' ORDER BY year DESC"
-        return self.execute_query(query)
-
-    def get_executions_by_jurisdiction(self, jurisdiction):
-        """Returns a list of all of the executions that occurred in the specified type of jurisdiction
-
-           PARAMETERS:
-               jurisdiction - the authority under which the execution occurred (state, federal, military, etc.)
-
-           RETURN:
-               a list of all of the executions that occurred in this type of jurisdiction
-        """
-        jurisdiction = jurisdiction.title()
-        query = "SELECT * FROM executions WHERE jurisdiction = '" + jurisdiction + "' ORDER BY year DESC"
-        return self.execute_query(query)
-
-    def get_executions_by_manner_of_execution(self, manner):
-        """Returns a list of all of the executions that used the specified method
-
-        PARAMETERS:
-            manner - the method of execution
-
-        RETURN:
-            a list of all of the executions that used this method
-        """
-        manner = manner.title()
-        query = "SELECT * FROM executions WHERE manner = '" + manner + "' ORDER BY year DESC"
-        return self.execute_query(query)
-
-    def get_executions_by_sex(self, sex):
-        """Returns a list of all executions of people of the specified gender
-
-        PARAMETERS:
-            sex - the sex of the executee, i.e. 'male' or 'female'
-
-        RETURN:
-            a list of all the executions of people of this gender
-        """
-        sex = sex.title()
-        query = "SELECT * FROM executions WHERE sex = '" + sex + "' ORDER BY year DESC"
+        query = "SELECT * FROM executions WHERE " + field + " <= '" + end + "' ORDER BY " + field + " DESC"
         return self.execute_query(query)
 
     def execute_query(self, query):
@@ -180,8 +127,6 @@ class DataSource:
             cursor = self.connection.cursor()
             cursor.execute(query)
             result = cursor.fetchall()
-            if len(result) == 0:
-                return None
             return Execution.convert_to_executions(result)
 
         except Exception as e:
@@ -208,12 +153,20 @@ class Execution:
         return [Execution(entry) for entry in db_entry_list]
 
     def __init__(self, db_entry):
-        self.metadata = {field : value for field, value in zip(DB_ENTRY_FORMAT, db_entry)}
+        self.metadata = {field : value for field, value in zip(DB_ENTRY_FIELDS, db_entry)}
 
-    def to_dict(self, alias=True):
+    def to_dict(self, alias=False):
+        """Returns a dict representation of the Execution
+
+        PARAMETERS:
+            alias - whether to alias the fields per DB_FIELD_ALIASES
+
+        RETURN:
+            a dict of {field(aliased): value} pairs
+        """
         execution_dict = self.metadata
         if alias:
-            execution_dict = {DB_ENTRY_ALIASES[field]: value for field, value in execution_dict.items()}
+            execution_dict = {DB_FIELD_ALIASES[field]: value for field, value in execution_dict.items()}
         return execution_dict
 
     def get_value_of(self, field):

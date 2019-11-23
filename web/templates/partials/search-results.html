@@ -1,13 +1,13 @@
 <h2>Search Results</h2>
-<p>Your search had {{ results|length }} results.</p>
+<p>Your search had {{ results|length }} result(s).</p>
 <table id="search-results">
   <tr>
   {% for field in display_fields %}
-    <th>{{ field|e }}</th>
+    <th>{{ field_aliases.get(field)|e }}</th>
   {% endfor %}
   </tr>
   {% for result in results %}
-  <tr>
+  <tr class="{{ loop.cycle('odd', 'even') }}">
     {% for field in display_fields %}
     <td>
     {% if result.get(field) is not none %}

@@ -1,0 +1,30 @@
+<h2>Search Terms</h2>
+<form method="GET">
+  {% if all_fields is not none %}
+  {% for field in select_fields %}
+  <fieldset>
+    {{ field_aliases.get(field)|e }} is
+    <select name="{{ field|e }}">
+      <option value {% if search_terms.get(field) is none %} selected {% endif %}></option>
+      {% if field in unique_values %}
+      {% for value in unique_values.get(field) %}
+      <option value="{{ value|e }}" {% if search_terms.get(field) == value %} selected {% endif %}>{{ value|e }}</option>
+      {% endfor %}
+      {% endif %}
+    </select>
+  </fieldset>
+  {% endfor %}
+  {% for field in input_fields %}
+  <fieldset>
+    {{ field_aliases.get(field)|e }} is between
+    <input name="{{ field|e }}!start" type="number" autocomplete="off" {% if search_terms.get(field + '!start') is not none %} value="{{ search_terms.get(field + '!start')|e }}" {% endif %}>
+    and
+    <input name="{{ field|e }}!end" type="number" autocomplete="off" {% if search_terms.get(field + '!end') is not none %} value="{{ search_terms.get(field + '!end')|e }}" {% endif %}>
+  </fieldset>
+  {% endfor %}
+  <input type="submit" value="Submit">
+  <a href="interactor"><button type="button">Clear</button></a>
+  {% else %}
+  The server encountered an error.
+  {% endif %}
+</form>

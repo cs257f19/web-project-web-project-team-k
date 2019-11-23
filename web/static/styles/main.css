@@ -226,6 +226,21 @@ h2 {
   font-size: 1.5em;
 }
 
+/* == button == */
+
+.button {
+  background-color: Green;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  border-radius: 8px;
+  text-decoration: #4CAF50;
+  display: inline-block;
+  font-size: 32px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
 /* == disclaimer == */
 
 .disclaimer {
@@ -258,13 +273,17 @@ h2 {
   border-bottom: 2px solid black;
 }
 
-#search-results tr {
-  background-color: rgb(225, 225, 225);
+#search-results tr.odd {
+  background-color: rgb(235, 235, 235);
+}
+
+#search-results tr.even {
+  background-color: rgb(220, 220, 220);
 }
 
 #search-results tr:focus,
 #search-results tr:hover {
-  background-color: rgb(215, 215, 215);
+  background-color: rgb(245, 245, 245);
 }
 
 
