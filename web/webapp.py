@@ -36,7 +36,6 @@ def get_results(search_terms):
     data_source = ds.DataSource(connection)
     results = None
     for search_term in search_terms.items():
-        print(search_term)
         field_results = get_field_results(data_source, search_term)
         if field_results is None:
             continue
