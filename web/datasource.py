@@ -15,12 +15,12 @@ TEAM_CREDENTIALS = {
 
 
 """Must be formatted in the same order as the SQL table."""
-DB_ENTRY_FIELDS = ["race", "age", "place", "jurisdiction", "crime", "manner",
+DB_ENTRY_FIELDS = ["race", "age", "subdivision", "jurisdiction", "crime", "manner",
                    "year", "state", "county", "sex"]
 
 DB_FIELD_ALIASES = { entry: entry.title() for entry in DB_ENTRY_FIELDS }
 DB_FIELD_ALIASES.update({
-    "place": "Place of Execution",
+    "subdivision": "Place of Execution",
     "crime": "Crime Committed",
     "manner": "Manner of Execution",
     "county": "County Code"
@@ -71,122 +71,6 @@ class DataSource:
         except Exception as e:
             print ("Something went wrong when executing the query: ", e)
             return None
-
-    def get_executions_by_race(self, race):
-        """Returns a list of all of the executions on persons of the specified race.
-
-        PARAMETERS:
-            race - the race of the executee
-
-        RETURN:
-            a list of all of the executions where the person is of the specified race
-        """
-        race = race.title()
-        query = "SELECT * FROM executions WHERE race = '" + race + "' ORDER BY year DESC"
-        return self.execute_query(query)
-
-    def get_executions_within_age_range(self, start_age, end_age):
-        """Returns a list of all of the executions that occurred within the specified age range (inclusive)
-
-        PARAMETERS:
-            start_age - the lower end of the age range (inclusive)
-            end_age - the upper end of the age range (inclusive)
-
-        RETURN:
-            a list of all of the executions that occurred within this age range
-        """
-        query = "SELECT * FROM executions WHERE age BETWEEN " + str(start_age) + " AND " + str(end_age) + " ORDER BY age DESC"
-        return self.execute_query(query)
-
-    def get_executions_within_year_range(self, start_year, end_year):
-        """Returns a list of all of the executions that occurred within the specified year range (inclusive)
-
-        PARAMETERS:
-            start_year - the starting year of the range (inclusive)
-            end_year - the ending year of the range (inclusive)
-
-        RETURN:
-            a list of all of the executions that occurred within this year range.
-        """
-        query = "SELECT * FROM executions WHERE year BETWEEN " + str(start_year) + " AND " + str(end_year) + " ORDER BY year DESC"
-        return self.execute_query(query)
-
-    def get_executions_by_state(self, state):
-        """Returns a list of all of the executions that occurred in the specified state
-
-        PARAMETERS:
-            state - the state of the executions
-
-        RETURN:
-            a list of all of the executions that occurred in this state
-        """
-        state = state.title()
-        query = "SELECT * FROM executions WHERE state = '" + state + "' ORDER BY year DESC"
-        return self.execute_query(query)
-
-    def get_executions_by_county_of_conviction(self, county_number):
-        """Returns a list of all of the executions where conviction occurred in the specified county
-
-        PARAMETERS:
-            county_number - the FIPS code of the county of the executions
-
-        RETURN:
-            a list of all of the executions where conviction occurred in this county
-        """
-        query = "SELECT * FROM executions WHERE county = '" + str(county) + "' ORDER BY year DESC"
-        return self.execute_query(query)
-
-    def get_executions_by_crime_committed(self, crime):
-        """Returns a list of all of the executions for the specified crime
-
-        PARAMETERS:
-            crime - the crime committed that resulted in execution
-
-        RETURN:
-            a list of all of the executions for this crime
-        """
-        crime = crime.title()
-        query = "SELECT * FROM executions WHERE crime = '" + crime + "' ORDER BY year DESC"
-        return self.execute_query(query)
-
-    def get_executions_by_jurisdiction(self, jurisdiction):
-        """Returns a list of all of the executions that occurred in the specified type of jurisdiction
-
-           PARAMETERS:
-               jurisdiction - the authority under which the execution occurred (state, federal, military, etc.)
-
-           RETURN:
-               a list of all of the executions that occurred in this type of jurisdiction
-        """
-        jurisdiction = jurisdiction.title()
-        query = "SELECT * FROM executions WHERE jurisdiction = '" + jurisdiction + "' ORDER BY year DESC"
-        return self.execute_query(query)
-
-    def get_executions_by_manner_of_execution(self, manner):
-        """Returns a list of all of the executions that used the specified method
-
-        PARAMETERS:
-            manner - the method of execution
-
-        RETURN:
-            a list of all of the executions that used this method
-        """
-        manner = manner.title()
-        query = "SELECT * FROM executions WHERE manner = '" + manner + "' ORDER BY year DESC"
-        return self.execute_query(query)
-
-    def get_executions_by_sex(self, sex):
-        """Returns a list of all executions of people of the specified gender
-
-        PARAMETERS:
-            sex - the sex of the executee, i.e. 'male' or 'female'
-
-        RETURN:
-            a list of all the executions of people of this gender
-        """
-        sex = sex.title()
-        query = "SELECT * FROM executions WHERE sex = '" + sex + "' ORDER BY year DESC"
-        return self.execute_query(query)
 
     def get_executions_by_field_exact(self, field, qualifier):
         """Returns a list of all the executions that exactly fit the qualifier for the field
